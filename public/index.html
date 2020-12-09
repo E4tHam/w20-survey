@@ -26,9 +26,30 @@
         -->
         <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
+        <script defer src="app.js"></script>
     </head>
     <body>
 
-        <script src="app.js"></script>
+
+        <label for="name">Name:</label> <br>
+        <input type="text" name="name" id="name"> <br>
+            
+        <br>
+
+        <label>Choose a number:</label> <br>
+
+        <input type="radio" name="number" id="r1" value="1">
+        <label for="r1">1</label> <br>
+        <input type="radio" name="number" id="r2" value="2">
+        <label for="r2">2</label> <br>
+        <input type="radio" name="number" id="r3" value="3">
+        <label for="r3">3</label> <br>
+        <input type="radio" name="number" id="r4" value="4">
+        <label for="r4">4</label> <br>
+
+        <br>
+
+        <button id="Submit" onclick="handle_submitForm()">Submit</button>
+        
     </body>
 </html>
