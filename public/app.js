@@ -45,3 +45,24 @@ function returnCheckedRadioFromName( name ) {
     }
 
 }
+
+
+function fill_10() {
+
+    let array = [];
+    
+
+    for ( let i = 0; i <= 1; i++ ) {
+        array.push( Math.floor( Math.random() * 100 ) );
+    }
+
+    db.collection( "tests" ).doc( "1" ).set({
+        data: array
+    })
+    .then(function() {
+        console.log("Submission successfully written!");
+    })
+    .catch(function(error) {
+        console.error("Error writing submission: ", error);
+    });
+}
