@@ -149,9 +149,9 @@ async function handle_ContinueButton() {
             console.error("Error removing page document: ", error);
         });
 
-        window.location.replace(
-            "../../"
-        );
+        window.location.href = 
+            "../../done/"
+        ;
     }
     // if not final test
     else if ( TEST < tests.length-1 ) {

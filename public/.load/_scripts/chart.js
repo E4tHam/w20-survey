@@ -120,9 +120,9 @@ function handle_Slider() {
 
 function handle_Continue() {
     if ( urlParams.get("test") == "7" )
-        window.location.replace(
-            "../done/"
-        );
+        window.location.href =
+            "../../done/"
+        ;
     else if ( parseInt(urlParams.get("test")) >= 1 && parseInt(urlParams.get("test")) < 7 )
         window.location.replace(
             "./?name=" + urlParams.get("Name")

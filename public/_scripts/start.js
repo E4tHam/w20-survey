@@ -30,11 +30,11 @@ async function handle_SubmitButton() {
     await store_page();
 
     // redirect
-    window.location.replace(
+    window.location.href = 
         "../test/?"
         + "token=" + TOKEN
         + "&test=" + 0
-    );
+    ;
 }
 
 

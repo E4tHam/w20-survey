@@ -1,0 +1,7 @@
+{
+    "search.exclude": {
+        ".load": true,
+        ".old": true,
+        ".vscode": true
+    }
+}
