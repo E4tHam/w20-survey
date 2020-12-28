@@ -1,0 +1,48 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>Economics Experiment</title>
+	<meta name="description" content="Economics Experiment">
+	<meta name="author" content="SitePoint">
+
+	<!--If integrating into Qualtrics, important to set "Page Transition" in Look&Feel->General to "None"  -->
+
+	<!-- Put the following lines into Look & Feel -> Advanced -> Header window -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script>var $j = jQuery.noConflict();</script>
+
+	<script src="script.js"></script>
+
+	<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+	<!-- Paste the following HTML into HTML window for QUALTRICS question -->
+	<br><br>
+	<div id="status" style="text-align:center;color:gray;font-size:80%;"></div>
+	<div id="container" style="height: 400px">&nbsp;</div>
+	<ul>
+		<li id="points"></li>
+		<li id="p"> </li>
+		<li id="h"> </li>
+		<li id="q"> </li>
+	</ul>
+
+	<br><br>
+	<div style="text-align:center">
+
+		<input id="slider" type="range" min="0" max="0.1" value="0.05" step="0.001"
+			onchange="updateSlider(this.value,this.id)">
+		<br>
+		<span style='color:gray;font-size:14px'>Set Size(change)</span>
+	</div>
+
+</body>
+
+</html>

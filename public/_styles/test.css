@@ -1,0 +1,36 @@
+
+/* style.css */
+
+
+/* Variables */
+:root {
+    --golden-ratio: 0.61803;
+    --canvas-width: min( 1200px, calc( 100vw - 20px ) );
+    --canvas-height: calc( var(--canvas-width) * var(--golden-ratio) );
+}
+
+/* Page Defaults */
+html,
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Canvas */
+#Chart-Div {
+    width: var(--canvas-width);
+    height: var(--canvas-height);
+}
+#Chart-Canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* Other */
+.centered {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}

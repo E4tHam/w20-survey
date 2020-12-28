@@ -1,0 +1,18 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <input type="text" id="NameInput"> <br>
+    <button onclick="handle_StartStop()" id="StartStopButton">Start</button>
+</body>
+</html>
+
+<script defer>
+    const NameInput = document.getElementById( "NameInput" );
+    function handle_StartStop() {
+        window.location.replace("test?name=" + NameInput.value + "&test=1");
+    }
+</script>
