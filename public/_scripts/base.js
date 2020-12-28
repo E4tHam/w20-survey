@@ -41,38 +41,7 @@ const yend   = () => 0;
 const app   = firebase.app();
 const db    = firebase.firestore();
 
-var tests   = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7"
-    // "8",
-    // "9",
-    // "10",
-    // "11",
-    // "12",
-    // "13",
-    // "14",
-    // "15",
-    // "16",
-    // "17",
-    // "18",
-    // "19",
-    // "20",
-    // "21",
-    // "22",
-    // "23",
-    // "24",
-    // "25",
-    // "26",
-    // "27",
-    // "28",
-    // "29",
-    // "30"
-];
+var tests   = [ "temp" ];
 
 
 /* On Window Resize */
@@ -89,22 +58,27 @@ function fitToContainer() {
 loadData();
 
 async function loadData() {
-    //  if URL page number is not firebase page number
+    //  if URL test number is not firebase test number
     //      redirect
     await db.collection( "submissions" ).doc( CASE )
-            .collection( TOKEN ).doc( "page" ).get()
+            .collection( TOKEN ).doc( "test" ).get()
             .then( doc => {
-                if ( doc.data().number != TEST )
+                if ( doc.data().finished == true )
+                    window.location.replace(
+                        "../../done"
+                    );
+                else if ( doc.data().current != TEST )
                     window.location.replace(
                         "./?token=" + TOKEN
-                        + "&test="  + doc.data().number
+                        + "&test="  + doc.data().current
                     );
+
+                tests = doc.data().order;
         })
     ;
 
-
     // console.log( `Retrieving test number ${TEST}: ${tests[TEST]}.` );
-    await db.collection("tests").doc( tests[TEST] ).get()
+    await db.collection( "tests" ).doc( tests[TEST] ).get()
         .then( doc => {
             SERVER_DATA = doc.data().data;
             // console.log( doc.data() );
@@ -127,8 +101,11 @@ async function handle_ContinueButton() {
         .set(
             Object.assign(
                 Actions,
-                { data: CLIENT_DATA
-            })    
+                {
+                    test_id: tests[TEST],
+                    data: CLIENT_DATA
+                }
+            )
         )
         .then(function() {
             console.log("Data successfully added!");
@@ -136,35 +113,40 @@ async function handle_ContinueButton() {
             console.error("Error adding data: ", error);
         });
 
+    
     // if final test
     if ( TEST == tests.length-1 ) {
         
-        // delete page document
         await db.collection( "submissions" ).doc( CASE )
-            .collection( TOKEN ).doc( "page" )
-            .delete()
+            .collection( TOKEN ).doc( "test" )
+            .set({
+                finished: true,
+                order: tests
+            })
         .then(function() {
-            console.log("Page document successfully deleted!");
+            console.log("Test data updated.");
         }).catch(function(error) {
-            console.error("Error removing page document: ", error);
+            console.error("Error updating data: ", error);
         });
 
-        window.location.href = 
-            "../../done/"
-        ;
+        window.location.replace(
+            "../../done"
+        );
     }
     // if not final test
     else if ( TEST < tests.length-1 ) {
-        // increment page document
+        // increment test document
         await db.collection( "submissions" ).doc( CASE )
-            .collection( TOKEN ).doc( "page" )
+            .collection( TOKEN ).doc( "test" )
             .set({
-                number: ( TEST + 1 )
+                finished: false,
+                current: ( TEST + 1 ),
+                order: tests
             })
         .then(function() {
-            console.log("Page document successfully incremented!");
+            console.log("Test document successfully incremented!");
         }).catch(function(error) {
-            console.error("Error incrementing page document: ", error);
+            console.error("Error incrementing test document: ", error);
         });
 
         window.location.replace(
