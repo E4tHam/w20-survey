@@ -5,14 +5,20 @@
 const clamp = ( min, X, max ) => Math.max( min, Math.min( X, max ) );
 
 const canvas = document.getElementById( "Chart-Canvas" );
-var DATA = [];
+const ContinueButton = document.getElementById("Continue");
+const urlParams = new URLSearchParams(window.location.search);
+
+var SERVER_DATA = [];
+var CLIENT_DATA = [ 0 ];
+
+var scalar = 3;
 
 const ctx = canvas.getContext("2d");
 
-var time = 0;
+var time = NaN;
 var max = 0;
 
-const dataPeriod = 4;
+const dataPeriod = 1;
 
 const xstep = 6;
 const ystep = 10;
@@ -38,7 +44,7 @@ function fitToContainer() {
     xbegin = canvas.width  *  font;
     ybegin = canvas.height * (1-font);
     xend = canvas.width*0.8;
-    // yend = 0;
+    yend = 0;
 }
 
 /* Initialize */
@@ -46,7 +52,9 @@ function initialize() {
     loadData();
     fitToContainer();
     draw();
-    handle_NameInput();
+    // handle_NameInput();
+
+    max = 0;
 }
 
 
@@ -55,16 +63,18 @@ function initialize() {
 const app   = firebase.app();
 const db    = firebase.firestore();
 
+const test = urlParams.get("test");
+
 const StartStopButton = document.getElementById("StartStopButton");
-const NameInput = document.getElementById("NameInput");
+const Slider = document.getElementById("Slider");
 
 function loadData() {
-    db.collection("tests").doc("1").get()
+    db.collection("tests").doc( test ).get()
         .then( doc => {
-            DATA = doc.data().data;
+            SERVER_DATA = doc.data().data;
             // console.log( doc.data() );
-            console.log( DATA );
-            NameInput.disabled = false;
+            console.log( SERVER_DATA );
+            StartStopButton.disabled = false;
         })
     ;
 }
@@ -73,23 +83,26 @@ function handle_StartStop() {
         case "Start":
             StartStopButton.setAttribute("state","Stop");
             StartStopButton.innerHTML = "Stop";
-            NameInput.disabled = true;
+            // NameInput.disabled = true;
+            Slider.disabled = false;
             paused = 0;
+            time = 0;
 
             break;
         case "Stop":
             paused = 1;
             StartStopButton.disabled = true;
-            db.collection( "submissions" ).doc( NameInput.value ).set({
-                name: NameInput.value,
-                stopTime: time
-            })
-            .then(function() {
-                alert("Submission successfully written!");
-            })
-            .catch(function(error) {
-                console.error("Error writing submission: ", error);
-            });
+            ContinueButton.disabled = false;
+            // db.collection( "submissions" ).doc( NameInput.value ).set({
+            //     name: NameInput.value,
+            //     stopTime: time
+            // })
+            // .then(function() {
+            //     alert("Submission successfully written!");
+            // })
+            // .catch(function(error) {
+            //     console.error("Error writing submission: ", error);
+            // });
 
             break;
         default:
@@ -97,11 +110,27 @@ function handle_StartStop() {
             break;
     }
 }
-function handle_NameInput() {
-    StartStopButton.disabled = ( NameInput.value == "" );
+// function handle_NameInput() {
+//     StartStopButton.disabled = ( NameInput.value == "" );
+// }
+
+function handle_Slider() {
+
 }
 
-
+function handle_Continue() {
+    if ( urlParams.get("test") == "7" )
+        window.location.replace(
+            "../done/"
+        );
+    else if ( parseInt(urlParams.get("test")) >= 1 && parseInt(urlParams.get("test")) < 7 )
+        window.location.replace(
+            "./?name=" + urlParams.get("Name")
+            + "&test=" + (1+parseInt(urlParams.get("test")))
+        );
+    else
+        alert("Error!");
+}
 
 /* Draw */
 
@@ -119,12 +148,14 @@ function yToPx( y_in ) {
 }
 
 function getValue( num ) {
+    if ( isNaN( num ) )
+        return 0;
 
     let data_i = Math.floor(num / dataPeriod);
     let data_w = (num % dataPeriod)/dataPeriod;
 
-    return DATA[ Math.min( data_i,(DATA.length - 1) ) ]*(1 - data_w)
-            + DATA[ Math.min( (data_i + 1), (DATA.length - 1) ) ]*(data_w);
+    return SERVER_DATA[ Math.min( data_i,(SERVER_DATA.length - 1) ) ]*(1 - data_w)
+            + SERVER_DATA[ Math.min( (data_i + 1), (SERVER_DATA.length - 1) ) ]*(data_w);
     
 }
 
@@ -133,7 +164,10 @@ function getTimeFromI( data_i ) {
 }
 
 function updateMax() {
-    max = Math.max( max, getValue( time ) );
+    // console.log(`max: ${max}`);
+    // debugger;
+    if ( !isNaN( getValue( time ) ) )
+        max = Math.max( max, getValue( time ) );
 }
 
 function drawAxies() {
@@ -179,12 +213,12 @@ function drawData() {
     let data_begin = clamp(
         0,
         Math.ceil( ( time - ((xend-xbegin) * (xstep/(xsteppx*canvas.width))) ) / dataPeriod ),
-        DATA.length-1
+        SERVER_DATA.length-1
     );
     let data_end = clamp(
         0,
         Math.floor( time / dataPeriod ),
-        DATA.length-1
+        SERVER_DATA.length-1
     );
 
     // console.log(`data_begin : ${data_begin}`);
@@ -228,7 +262,7 @@ function drawData() {
 }
 
 function drawMax() {
-    // console.log(`max: ${max}`);
+    // console.log(`yToPx(${max}: ${yToPx(max)}`);
     ctx.beginPath();
     ctx.strokeStyle = "#FF0000";
     ctx.fillStyle = "#FF0000";
@@ -240,18 +274,18 @@ function drawMax() {
 
 
 
-const FPS = 12;
+const FPS = 10;
 function draw() { setTimeout(function() {
     ctx.clearRect( 0, 0, canvas.width, canvas.height );
     
+    // CLIENT_DATA.push( CLIENT_DATA[ CLIENT_DATA.length-1 ] + SERVER_DATA[  ] )
     drawAxies();
     drawData();
     updateMax();
     drawMax();
+
     time += (!paused);
     
     // console.log(`time:  ${time}`);
-
-    
     requestAnimationFrame(draw);
 }, 1000/FPS);}

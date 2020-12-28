@@ -1,42 +1,20 @@
 
 <!-- index.html -->
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>FireBase Test</title>
 
-        <!-- update the version number as needed -->
-        <script defer src="/__/firebase/8.1.2/firebase-app.js"></script>
-        <!-- include only the Firebase features as you need -->
-        <script defer src="/__/firebase/8.1.2/firebase-auth.js"></script>
-        <script defer src="/__/firebase/8.1.2/firebase-database.js"></script>
-        <script defer src="/__/firebase/8.1.2/firebase-firestore.js"></script>
-        <script defer src="/__/firebase/8.1.2/firebase-functions.js"></script>
-        <script defer src="/__/firebase/8.1.2/firebase-messaging.js"></script>
-        <script defer src="/__/firebase/8.1.2/firebase-storage.js"></script>
-        <script defer src="/__/firebase/8.1.2/firebase-analytics.js"></script>
-        <script defer src="/__/firebase/8.1.2/firebase-remote-config.js"></script>
-        <script defer src="/__/firebase/8.1.2/firebase-performance.js"></script>
-        <!-- 
-            initialize the SDK after all desired features are loaded, set useEmulator to false
-            to avoid connecting the SDK to running emulators.
-        -->
-        <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-
-        <link rel="stylesheet" href="styles/style.css">
-        <script defer src="_scripts/chart.js"></script>
-    </head>
-    <body onload="initialize()">
-
-        <div id="Canvas-Div">
-            <canvas id="Chart-Canvas"></canvas>
-        </div>
-
-        <input type="text" id="NameInput" oninput="handle_NameInput()" disabled> <br>
-        <button onclick="handle_StartStop()" state="Start" id="StartStopButton" disabled>Start</button>
-        
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub</title>
+</head>
+<body>
+    <a href="./Correlated_slider+stop/start/"   >Correlated * slider + stop</a>     <br>
+    <a href="./Correlated_slider/start/"        >Correlated * slider</a>            <br>
+    <a href="./Correlated_stop/start/"          >Correlated * stop</a>              <br>
+    <br>
+    <a href="./Independent_slider+stop/start/"  >Independent * slider + stop</a>    <br>
+    <a href="./Independent_slider/start/"       >Independent * slider</a>           <br>
+    <a href="./Independent_stop/start/"         >Independent * stop</a>             <br>
+</body>
 </html>
