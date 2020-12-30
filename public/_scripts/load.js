@@ -8,7 +8,7 @@ const db    = firebase.firestore();
 const DATA_1;
 
 function initialize() {
-    // db.collection( "tests" ).doc( "7" ).set({
+    // db.collection( "processes" ).doc( "7" ).set({
     //     data: DATA_7
     // })
     // .then(function() {
@@ -41,7 +41,7 @@ function fill_10() {
         array.push( Math.floor( Math.random() * 100 ) );
     }
 
-    db.collection( "tests" ).doc( "1" ).set({
+    db.collection( "processes" ).doc( "1" ).set({
         data: array
     })
     .then(function() {

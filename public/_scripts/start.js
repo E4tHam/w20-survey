@@ -8,10 +8,10 @@ const db    = firebase.firestore();
 const SubmitButton = document.getElementById( "SubmitButton" );
 const NameInput = document.getElementById( "NameInput" );
 
-var tests = ["temp"];
-db.collection( "tests" ).doc( "document_ids" ).get()
+var processes = ["temp"];
+db.collection( "processes" ).doc( "document_ids" ).get()
     .then( doc => {
-        tests = doc.data().ids;
+        processes = doc.data().ids;
     }).catch(function(error) {
         console.error("Error adding data: ", error);
         alert( "Please try again later." );
@@ -37,25 +37,25 @@ async function handle_SubmitButton() {
     // store all information
     await store_information();
 
-    // set test to 0
-    assign_test_order();
-    await store_test();
+    // set process to 0
+    assign_process_order();
+    await store_process();
 
     // redirect
     window.location.replace(
-        "../test/?"
+        "../survey/?"
         + "token=" + TOKEN
-        + "&test=" + 0
+        + "&process=" + 0
     );
 }
 
-function assign_test_order() {
+function assign_process_order() {
     // placeholder code
-    let temp = tests;
-    tests = [];
+    let temp = processes;
+    processes = [];
     while ( temp.length != 0 ) {
         let rand = Math.floor( Math.random() * temp.length );
-        tests.push( temp[rand] );
+        processes.push( temp[rand] );
         temp.splice( rand, 1 );
     }
 }
@@ -79,15 +79,15 @@ function store_information() {
     });
 }
 
-function store_test() {
+function store_process() {
     return db.collection( "submissions" ).doc( CASE )
-        .collection( TOKEN ).doc( "test" ).set({
+        .collection( TOKEN ).doc( "metadata" ).set({
             finished: false,
             current: 0,
-            order: tests
+            order: processes
         })
     .then(function() {
-        console.log("Test number successfully written!");
+        console.log("Process number successfully written!");
     })
     .catch(function() {
         alert( "[Error]: Please try again." );

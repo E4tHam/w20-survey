@@ -56,7 +56,7 @@ function fill_10() {
         array.push( Math.floor( Math.random() * 100 ) );
     }
 
-    db.collection( "tests" ).doc( "1" ).set({
+    db.collection( "processes" ).doc( "1" ).set({
         data: array
     })
     .then(function() {

@@ -12,7 +12,7 @@ var chart;
 const urlParams         = new URLSearchParams(window.location.search);
 const CASE              = document.currentScript.getAttribute("case");
 const TOKEN             = urlParams.get("token");
-const TEST              = parseInt( urlParams.get("test") );
+const PROCESS           = parseInt( urlParams.get("process") );
 
 const ContinueButton    = document.getElementById("ContinueButton");
 const StartButton       = document.getElementById("StartButton");
@@ -32,7 +32,7 @@ var Actions             = new Object();
 const app   = firebase.app();
 const db    = firebase.firestore();
 
-var tests   = [ "temp" ];
+var processes   = [ "temp" ];
 
 
 
@@ -41,27 +41,27 @@ var tests   = [ "temp" ];
 loadData();
 
 async function loadData() {
-    //  if URL test number is not firebase test number
+    //  if URL process number is not firebase process number
     //      redirect
     await db.collection( "submissions" ).doc( CASE )
-            .collection( TOKEN ).doc( "test" ).get()
+            .collection( TOKEN ).doc( "metadata" ).get()
             .then( doc => {
                 if ( doc.data().finished == true )
                     window.location.replace(
                         "../../done"
                     );
-                else if ( doc.data().current != TEST )
+                else if ( doc.data().current != PROCESS )
                     window.location.replace(
                         "./?token=" + TOKEN
-                        + "&test="  + doc.data().current
+                        + "&process="  + doc.data().current
                     );
 
-                tests = doc.data().order;
+                processes = doc.data().order;
         })
     ;
 
-    // console.log( `Retrieving test number ${TEST}: ${tests[TEST]}.` );
-    await db.collection( "tests" ).doc( tests[TEST] ).get()
+    // console.log( `Retrieving process number ${PROCESS}: ${processes[PROCESS]}.` );
+    await db.collection( "processes" ).doc( processes[PROCESS] ).get()
         .then( doc => {
             SERVER_DATA = doc.data().data;
             // console.log( doc.data() );
@@ -80,12 +80,12 @@ async function handle_ContinueButton() {
 
     // save the actions and CLIENT_DATA
     await db.collection( "submissions" ).doc( CASE )
-        .collection( TOKEN ).doc( ""+TEST )
+        .collection( TOKEN ).doc( ""+PROCESS )
         .set(
             Object.assign(
                 Actions,
                 {
-                    test_id: tests[TEST],
+                    process_id: processes[PROCESS],
                     data: CLIENT_DATA
                 }
             )
@@ -97,17 +97,17 @@ async function handle_ContinueButton() {
         });
 
     
-    // if final test
-    if ( TEST == tests.length-1 ) {
+    // if final process
+    if ( PROCESS == processes.length-1 ) {
         
         await db.collection( "submissions" ).doc( CASE )
-            .collection( TOKEN ).doc( "test" )
+            .collection( TOKEN ).doc( "metadata" )
             .set({
                 finished: true,
-                order: tests
+                order: processes
             })
         .then(function() {
-            console.log("Test data updated.");
+            console.log("Process data updated.");
         }).catch(function(error) {
             console.error("Error updating data: ", error);
         });
@@ -116,25 +116,25 @@ async function handle_ContinueButton() {
             "../../done"
         );
     }
-    // if not final test
-    else if ( TEST < tests.length-1 ) {
-        // increment test document
+    // if not final process
+    else if ( PROCESS < processes.length-1 ) {
+        // increment process document
         await db.collection( "submissions" ).doc( CASE )
-            .collection( TOKEN ).doc( "test" )
+            .collection( TOKEN ).doc( "metadata" )
             .set({
                 finished: false,
-                current: ( TEST + 1 ),
-                order: tests
+                current: ( PROCESS + 1 ),
+                order: processes
             })
         .then(function() {
             console.log("Test document successfully incremented!");
         }).catch(function(error) {
-            console.error("Error incrementing test document: ", error);
+            console.error("Error incrementing process document: ", error);
         });
 
         window.location.replace(
             "./?token=" + TOKEN
-            + "&test="  + ( TEST + 1 )
+            + "&process="  + ( PROCESS + 1 )
         );
     }
     else
