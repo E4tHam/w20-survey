@@ -3,9 +3,11 @@
 
 
 const clamp = ( min, T, max ) => Math.max( min, Math.min( T, max ) );
+const goldenratio       = 0.61803;
 
-var canvas              = document.getElementById( "Chart-Canvas" );
-var ctx                 = canvas.getContext("2d");
+const canvas            = document.getElementById( "Chart-Canvas" );
+const ctx               = canvas.getContext("2d");
+var chart;
 
 const urlParams         = new URLSearchParams(window.location.search);
 const CASE              = document.currentScript.getAttribute("case");
@@ -27,29 +29,10 @@ var scalar              = 1;
 class Stop { };
 var Actions             = new Object();
 
-const ystep             = 10;
-const ysteppx = () => 0.1 * canvas.height;
-const xstep             = 6;
-const xsteppx = () => 0.1 * canvas.width;
-const font              = 0.075;
-
-const xbegin = () => canvas.width  *  font;
-const ybegin = () => canvas.height * (1-font);
-const xend   = () => canvas.width * 0.8;
-const yend   = () => 0;
-
 const app   = firebase.app();
 const db    = firebase.firestore();
 
 var tests   = [ "temp" ];
-
-
-/* On Window Resize */
-window.addEventListener('resize', fitToContainer);
-function fitToContainer() {
-    canvas.width  = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-}
 
 
 
@@ -164,25 +147,4 @@ async function handle_ContinueButton() {
 function updateMax() {
     if ( CLIENT_DATA.length != 0 )
         max = Math.max( max, CLIENT_DATA[ CLIENT_DATA.length - 1 ] );
-}
-
-/* Draw */
-
-function xToPx( x_in ) {
-    
-}
-
-function yToPx( y_in ) {
-    let out = ybegin - (y_in/ystep)*ysteppx*canvas.height;
-    if ( out > ybegin || out < 0 )
-        return NaN;
-    return out;
-}
-
-function drawAxies() {
-
-}
-
-function drawMax() {
-    
 }

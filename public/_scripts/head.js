@@ -2,20 +2,27 @@
 /* head.js */
 
 
+// Initialize
+
+initializeChart();
+
+//
+
+
 function handle_StartButton() {
     frame = 0;
     paused = false;
 
     StartButton.disabled = true;
-    
+
     try {
         Slider.disabled = false;
     } catch ( error ) { }
-    
+
     try {
         StopButton.disabled = false;
-    } catch (error) { }
-    
+    } catch ( error ) { }
+
     draw();
 }
 
@@ -26,7 +33,7 @@ function stop_execution() {
     try {
         Slider.disabled = true;
     } catch ( error ) { }
-    
+
     try {
         StopButton.disabled = true;
     } catch (error) { }
@@ -35,16 +42,9 @@ function stop_execution() {
 }
 
 
-initial_draw();
-function initial_draw() {
-    ctx.clearRect( 0, 0, canvas.width, canvas.height );
-    drawAxies();
-}
-
 function draw() { setTimeout(function() {
-    ctx.clearRect( 0, 0, canvas.width, canvas.height );
-    
-    /* Update */
+
+    /* Update Client Data or Stop */
     try {
         if ( isNaN( frame ) )
             throw new Stop();
@@ -55,13 +55,11 @@ function draw() { setTimeout(function() {
 
         // console.log("Stopping!");
         stop_execution();
-        return;   
+        return;
     }
 
-    /* Draw */    
-    drawAxies();
-    drawData();
-    drawMax();
+    /* Draw */
+    updateChart();
 
 
     frame += ( paused ? 0 : 1 );
