@@ -44,27 +44,34 @@ function stop_execution() {
 
 function draw() { setTimeout(function() {
 
-    /* Draw */
-    updateChart();
-
     /* Update Client Data or Stop */
     try {
-        if ( isNaN( frame ) )
+        if ( paused )
             throw new Stop();
         updateClientData();
-        checkStopCondition();
     } catch ( error ) {
         if ( !(error instanceof Stop) )
             throw error;
-
-        // console.log("Stopping!");
         stop_execution();
         return;
     }
 
     // console.log(`time: ${time()}`);
 
+    /* Draw */
+    updateChart();
 
-    frame += ( paused ? 0 : 1 );
+    /* Check Stopping Condition */ 
+    try {
+        checkStopCondition();
+    } catch ( error ) {
+        if ( !(error instanceof Stop) )
+            throw error;
+        stop_execution();
+        return;
+    }
+
+
+    frame++;
     requestAnimationFrame( draw );
 }, 1000/FPS );}
