@@ -2,7 +2,7 @@
 /* independent.js */
 
 
-const seconds_per_point       = 3;
+const seconds_per_point = 3;
 const frames_per_point  = FPS*seconds_per_point;
 
 
@@ -13,7 +13,7 @@ function updateClientData() {
     // if time is up
     if ( SERVER_DATA.length <= point ) {
         console.log("[WARNING]: Time is up!");
-        debugger;
+        // debugger;
         throw new Stop();
     }
 
@@ -32,27 +32,4 @@ function updateClientData() {
             scalar * SERVER_DATA[ point ]
         );
     }
-}
-
-function getValue( frame ) {
-
-    let point = Math.floor( frame/frames_per_point );
-
-    if ( isNaN( point )
-        || point < 0
-        || point > CLIENT_DATA.length )
-        return 0;
-    
-    return CLIENT_DATA[ point ];
-}
-
-
-function initializeChart() {
-    console.log( `chart: ${chart}` );
-}
-
-
-function updateChart() {
-    updateMax();
-    
 }

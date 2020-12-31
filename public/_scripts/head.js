@@ -44,11 +44,15 @@ function stop_execution() {
 
 function draw() { setTimeout(function() {
 
+    /* Draw */
+    updateChart();
+
     /* Update Client Data or Stop */
     try {
         if ( isNaN( frame ) )
             throw new Stop();
         updateClientData();
+        checkStopCondition();
     } catch ( error ) {
         if ( !(error instanceof Stop) )
             throw error;
@@ -58,10 +62,9 @@ function draw() { setTimeout(function() {
         return;
     }
 
-    /* Draw */
-    updateChart();
+    // console.log(`time: ${time()}`);
 
 
     frame += ( paused ? 0 : 1 );
     requestAnimationFrame( draw );
-}, 1000/FPS);}
+}, 1000/FPS );}

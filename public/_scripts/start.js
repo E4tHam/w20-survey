@@ -2,25 +2,37 @@
 /* start.js */
 
 
-const app   = firebase.app();
-const db    = firebase.firestore();
+const app           = firebase.app();
+const db            = firebase.firestore();
 
-const SubmitButton = document.getElementById( "SubmitButton" );
-const NameInput = document.getElementById( "NameInput" );
+const SubmitButton  = document.getElementById( "SubmitButton" );
+const NameInput     = document.getElementById( "NameInput" );
 
-var processes = ["temp"];
-db.collection( "processes" ).doc( "document_ids" ).get()
-    .then( doc => {
-        processes = doc.data().ids;
-    }).catch(function(error) {
-        console.error("Error adding data: ", error);
-        alert( "Please try again later." );
-    })
+const CASE          = document.currentScript.getAttribute("case");
+var TOKEN           = NaN;
+
+const DATA_SET      = ( CASE.indexOf( "Independent" ) !== -1 ) ? "independent"
+                    : ( CASE.indexOf( "Correlated"  ) !== -1 ) ? "correlated"
+                    : "UNKNOWN";
+
+
+var processes       = [ "temp" ];
+db.collection( "onload_data" ).doc( DATA_SET )
+        .collection( "processes" ).doc( "document_ids" )
+    .get()
+        .then( doc => {
+            processes = doc.data().ids;
+        }).catch(function(error) {
+            console.error("Error adding data: ", error);
+            alert( "Please try again later." );
+        })
 ;
 NameInput.disabled = false;
 
-const CASE = document.currentScript.getAttribute("case");
-var TOKEN = NaN;
+
+
+
+/* Buttons */
 
 handle_NameInput();
 function handle_NameInput() {
@@ -48,6 +60,9 @@ async function handle_SubmitButton() {
         + "&process=" + 0
     );
 }
+
+
+
 
 function assign_process_order() {
     // placeholder code

@@ -27,6 +27,6 @@ Independent Case
 chart.js
 correlated.js
 independent.js
-withstop.js
-nostop.js
+stopbutton.js
+stopcondition.js
 slider.js

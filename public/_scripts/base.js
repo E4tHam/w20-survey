@@ -2,43 +2,63 @@
 /* base.js */
 
 
+// constants
 const clamp = ( min, T, max ) => Math.max( min, Math.min( T, max ) );
 const goldenratio       = 0.61803;
 
-const canvas            = document.getElementById( "Chart-Canvas" );
-const ctx               = canvas.getContext("2d");
-var chart;
-
-const urlParams         = new URLSearchParams(window.location.search);
+// page data
+const urlParams         = new URLSearchParams( window.location.search );
 const CASE              = document.currentScript.getAttribute("case");
 const TOKEN             = urlParams.get("token");
 const PROCESS           = parseInt( urlParams.get("process") );
 
-const ContinueButton    = document.getElementById("ContinueButton");
-const StartButton       = document.getElementById("StartButton");
+const DATA_SET          = ( CASE.indexOf( "Independent" ) !== -1 ) ? "independent"
+                        : ( CASE.indexOf( "Correlated"  ) !== -1 ) ? "correlated"
+                        : "UNKNOWN";
 
-var SERVER_DATA         = [ ];
-var CLIENT_DATA         = [ ];
+// page elements
+const StartButton       = document.getElementById("StartButton");
+const ContinueButton    = document.getElementById("ContinueButton");
+
+// firebase
+const app               = firebase.app();
+const db                = firebase.firestore();
+
+// data from firebase
+var processes           = [ "temp" ];
+var SERVER_DATA         = [ 0 ];
+
+// load firebase data
+loadData();
+
+// data for firebase
+var Actions             = new Object();
+var CLIENT_DATA         = [ 0 ];
+
+
+
+// chart.js
+const canvas            = document.getElementById( "Chart-Canvas" );
+const ctx               = canvas.getContext("2d");
+var chart;
 
 const FPS               = 15;
 var frame               = NaN;
+const time              = () => frame/FPS;
 var paused              = true;
 var max                 = 0;
 var scalar              = 1;
-
 class Stop { };
-var Actions             = new Object();
 
-const app   = firebase.app();
-const db    = firebase.firestore();
+const _stepSize = 5;
+const _maxTicksLimit = 5;
+const _timeWidth = _stepSize * _maxTicksLimit;
 
-var processes   = [ "temp" ];
+
 
 
 
 /* Firebase */
-
-loadData();
 
 async function loadData() {
     //  if URL process number is not firebase process number
@@ -61,11 +81,12 @@ async function loadData() {
     ;
 
     // console.log( `Retrieving process number ${PROCESS}: ${processes[PROCESS]}.` );
-    await db.collection( "processes" ).doc( processes[PROCESS] ).get()
+    await db.collection( "onload_data" ).doc( DATA_SET )
+        .collection( "processes" ).doc( ""+processes[PROCESS] )
+        .get()
         .then( doc => {
             SERVER_DATA = doc.data().data;
-            // console.log( doc.data() );
-            console.log( SERVER_DATA );
+            // console.log( SERVER_DATA );
             StartButton.disabled = false;
         })
     ;
@@ -96,10 +117,10 @@ async function handle_ContinueButton() {
             console.error("Error adding data: ", error);
         });
 
-    
+
     // if final process
     if ( PROCESS == processes.length-1 ) {
-        
+
         await db.collection( "submissions" ).doc( CASE )
             .collection( TOKEN ).doc( "metadata" )
             .set({
@@ -142,9 +163,88 @@ async function handle_ContinueButton() {
 }
 
 
-/* Update */
+
+
+
+
+/* Chart */
+
+function initializeChart() {
+
+    chart = new Chart(ctx, {
+        type: 'line',
+
+        data: {
+            // labels: chartLabels,
+            datasets: [{
+                borderColor : 'blue',
+                fill        : false,
+                pointRadius : 0
+            },{
+                borderColor : 'red',
+                fill        : false,
+                pointRadius : 0
+            }]
+        },
+
+        options: {
+            tooltips    : { enabled: false }        ,
+            hover       : { mode: null }            ,
+            aspectRatio : ( 1 + goldenratio )       ,
+            legend      : { display:  false }       ,
+            animation   : { duration: 0 }           ,
+            elements    : { line: { tension: 0 } }  ,
+
+            scales: {
+                xAxes: [{
+                    type: 'linear',
+                    ticks: {
+                        maxTicksLimit: _maxTicksLimit,
+                        stepSize: _stepSize,
+                        min: 0,
+                        max: _timeWidth
+                    }
+                }]
+            }
+        }
+    });
+
+}
+
 
 function updateMax() {
     if ( CLIENT_DATA.length != 0 )
         max = Math.max( max, CLIENT_DATA[ CLIENT_DATA.length - 1 ] );
+}
+
+
+
+function updateChart() {
+
+    // Data
+    let next = {
+        x: time(),
+        y: CLIENT_DATA[ CLIENT_DATA.length - 1 ]
+    }
+
+    chart.data.datasets[0].data.push( next );
+
+
+    chart.options.scales.xAxes[0].ticks.min = Math.max( 0, next.x - _timeWidth );
+    chart.options.scales.xAxes[0].ticks.max = Math.max( _timeWidth, next.x );
+
+    // Max
+    updateMax();
+    chart.data.datasets[1].data = [
+    {
+        x: 0    ,
+        y: max
+    },{
+        x: next.x + _timeWidth  ,
+        y: max
+    }];
+
+    // Update
+    chart.update();
+
 }
