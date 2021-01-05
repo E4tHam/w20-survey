@@ -2,9 +2,11 @@
 /* slider.js */
 
 
+hasSlider                   = true;
 const Slider                = document.getElementById("Slider");
 
 Actions[ "SliderRecord" ]   = new Object();
+
 
 
 function handle_Slider() {

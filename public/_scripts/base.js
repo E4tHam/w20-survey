@@ -17,6 +17,8 @@ const DATA_SET          = ( CASE.indexOf( "Independent" ) !== -1 ) ? "independen
                         : ( CASE.indexOf( "Correlated"  ) !== -1 ) ? "correlated"
                         : "UNKNOWN";
 
+var hasSlider           = false;
+var hasStopButton       = false;
 
 // page elements
 const StartButton       = document.getElementById("StartButton");
@@ -56,9 +58,9 @@ var frame               = NaN;
 const time              = () => frame/FPS;
 var paused              = true;
 
-const _stepSize = 5;
-const _maxTicksLimit = 5;
-const _timeWidth = _stepSize * _maxTicksLimit;
+const _stepSize         = 5;
+const _maxTicksLimit    = 6;
+const _timeWidth        = _stepSize * _maxTicksLimit;
 
 
 // test
@@ -193,10 +195,12 @@ function initializeChart() {
             datasets: [{
                 borderColor : 'blue',
                 fill        : false,
+                borderWidth : 1,
                 pointRadius : 0
             },{
                 borderColor : 'red',
                 fill        : false,
+                borderWidth : 3,
                 pointRadius : 0
             }]
         },
@@ -210,13 +214,33 @@ function initializeChart() {
             elements    : { line: { tension: 0 } }  ,
 
             scales: {
+                yAxes: [{
+                    ticks: {
+                        suggestedMin: -10,
+                        suggestedMax:  10,
+
+                        callback: function( label ) {
+                            label = Math.round( (label + Number.EPSILON ) * 10) / 10
+                            return Number.isInteger( label ) ? ( label + ".0" ) : label;
+                        }
+                    }
+                }],
                 xAxes: [{
                     type: 'linear',
                     ticks: {
-                        maxTicksLimit: _maxTicksLimit,
-                        stepSize: _stepSize,
-                        min: 0,
-                        max: _timeWidth
+                        maxTicksLimit   : _maxTicksLimit,
+                        stepSize        : _stepSize,
+
+                        min             : 0,
+                        max             : _timeWidth,
+
+                        maxRotation     : 0,
+                        minRotation     : 0,
+
+                        callback: function( label ) {
+                            label = Math.round( (label + Number.EPSILON ) * 10) / 10
+                            return Number.isInteger( label ) ? ( label + ".0" ) : label;
+                        }
                     }
                 }]
             }

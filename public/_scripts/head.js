@@ -15,13 +15,11 @@ function handle_StartButton() {
 
     StartButton.disabled = true;
 
-    try {
+    if ( hasSlider )
         Slider.disabled = false;
-    } catch ( error ) { }
 
-    try {
+    if ( hasStopButton )
         StopButton.disabled = false;
-    } catch ( error ) { }
 
     draw();
 }
@@ -30,13 +28,11 @@ function stop_execution() {
     frame = NaN;
     paused = true;
 
-    try {
+    if ( hasSlider )
         Slider.disabled = true;
-    } catch ( error ) { }
 
-    try {
+    if ( hasStopButton )
         StopButton.disabled = true;
-    } catch (error) { }
 
     ContinueButton.disabled = false;
 
@@ -65,7 +61,8 @@ function draw() { setTimeout(function() {
 
     /* Check Stopping Condition */ 
     try {
-        checkStopCondition();
+        if ( !hasStopButton )
+            checkStopCondition();
     } catch ( error ) {
         if ( !(error instanceof Stop) )
             throw error;
