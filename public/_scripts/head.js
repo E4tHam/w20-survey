@@ -6,6 +6,8 @@
 
 initializeChart();
 
+var animationFrameRequest   = NaN;
+
 //
 
 
@@ -26,9 +28,11 @@ function handle_StartButton() {
     draw();
 }
 
-function stop_execution() {
+async function stop_execution() {
     frame = NaN;
     paused = true;
+
+    cancelAnimationFrame(animationFrameRequest);
 
     if ( hasSlider )
         Slider.disabled = true;
@@ -36,9 +40,16 @@ function stop_execution() {
     if ( hasStopButton )
         StopButton.disabled = true;
 
-    ContinueButton.disabled = false;
 
     displayFeedback();
+
+    // save the actions and CLIENT_DATA
+    await storeProccessData();
+
+    // save the next proccess
+    await incrementProccess();
+
+    ContinueButton.disabled = false;
 }
 
 var  timer_now;
@@ -47,15 +58,16 @@ const timer_interval = 1000/FPS;
 var  timer_delta;
 
 function draw() {
-    
-    requestAnimationFrame( draw );
+
+    animationFrameRequest = requestAnimationFrame( draw );
+    // console.log(`animationFrameRequest : ${animationFrameRequest}`);
 
     // FPS Control
     timer_now = Date.now();
     timer_delta = timer_now - timer_then;
-    if ( timer_delta < timer_interval ) 
+    if ( timer_delta < timer_interval )
         return;
-    
+
     timer_then = timer_now - ( timer_delta % timer_interval );
 
 
@@ -76,7 +88,7 @@ function draw() {
     /* Update Values */
     updateMax();
     updateCost();
-    
+
     /* Draw */
     updateChart();
 

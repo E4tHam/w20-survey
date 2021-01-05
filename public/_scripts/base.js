@@ -119,72 +119,80 @@ async function loadData() {
 async function handle_ContinueButton() {
     ContinueButton.disabled = true;
 
-    // save the actions and CLIENT_DATA
-    await db.collection( "submissions" ).doc( CASE )
-        .collection( TOKEN ).doc( ""+PROCESS )
-        .set(
-            Object.assign(
-                Actions,
-                {
-                    process_id: processes[PROCESS],
-                    data: CLIENT_DATA
-                }
-            )
-        )
-        .then(function() {
-            console.log("Data successfully added!");
-        }).catch(function(error) {
-            console.error("Error adding data: ", error);
-        });
-
-
-    // if final process
+    // redirect to next page
     if ( PROCESS === processes.length-1 ) {
-
-        await db.collection( "submissions" ).doc( CASE )
-            .collection( TOKEN ).doc( "metadata" )
-            .set({
-                finished: true,
-                order: processes
-            })
-        .then(function() {
-            console.log("Process data updated.");
-        }).catch(function(error) {
-            console.error("Error updating data: ", error);
-        });
-
         window.location.replace(
             "../../done"
         );
     }
-    // if not final process
     else if ( PROCESS < processes.length-1 ) {
-        // increment process document
-        await db.collection( "submissions" ).doc( CASE )
-            .collection( TOKEN ).doc( "metadata" )
-            .set({
-                finished: false,
-                current: ( PROCESS + 1 ),
-                order: processes
-            })
-        .then(function() {
-            console.log("Test document successfully incremented!");
-        }).catch(function(error) {
-            console.error("Error incrementing process document: ", error);
-        });
-
         window.location.replace(
             "./?token=" + TOKEN
             + "&process="  + ( PROCESS + 1 )
         );
     }
-    else
-        alert("Error!");
+}
+
+function storeProccessData() {
+
+    return db.collection( "submissions" ).doc( CASE )
+    .collection( TOKEN ).doc( ""+PROCESS )
+    .set(
+        Object.assign(
+            Actions,
+            {
+                max: max,
+                cost: cost,
+                earnings: earnings,
+                process_id: processes[PROCESS],
+                data: CLIENT_DATA
+            }
+        )
+    )
+    .then(function() {
+        console.log("Data successfully added!");
+    }).catch(function(error) {
+        console.error("Error adding data: ", error);
+    });
+
 }
 
 
+function incrementProccess() {
+        // if final process
+        if ( PROCESS === processes.length-1 ) {
 
+            return db.collection( "submissions" ).doc( CASE )
+                .collection( TOKEN ).doc( "metadata" )
+                .set({
+                    finished: true,
+                    order: processes
+                })
+            .then(function() {
+                console.log("Process data updated.");
+            }).catch(function(error) {
+                console.error("Error updating data: ", error);
+            });
 
+        }
+        // if not final process
+        else if ( PROCESS < processes.length-1 ) {
+            
+            return db.collection( "submissions" ).doc( CASE )
+                .collection( TOKEN ).doc( "metadata" )
+                .set({
+                    finished: false,
+                    current: ( PROCESS + 1 ),
+                    order: processes
+                })
+            .then(function() {
+                console.log("Test document successfully incremented!");
+            }).catch(function(error) {
+                console.error("Error incrementing process document: ", error);
+            });
+
+        }
+}
 
 
 /* Chart */
@@ -195,7 +203,6 @@ function initializeChartBase() {
         type: 'line',
 
         data: {
-            // labels: chartLabels,
             datasets: [{
                 borderColor : 'blue',
                 fill        : false,
@@ -218,6 +225,7 @@ function initializeChartBase() {
 
             scales: {
                 yAxes: [{
+                    type: 'linear',
                     ticks: {
                         suggestedMin: -10,
                         suggestedMax:  10,
