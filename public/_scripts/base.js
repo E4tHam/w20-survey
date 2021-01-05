@@ -189,8 +189,8 @@ async function handle_ContinueButton() {
 
 /* Chart */
 
-function initializeChart() {
-
+function initializeChartBase() {
+    
     chart = new Chart(ctx, {
         type: 'line',
 
@@ -199,7 +199,6 @@ function initializeChart() {
             datasets: [{
                 borderColor : 'blue',
                 fill        : false,
-                borderWidth : 1,
                 pointRadius : 0
             },{
                 borderColor : 'red',
@@ -259,33 +258,17 @@ function updateMax() {
 
 
 
-function updateChart() {
+function updateMaxLineValue() {
 
-    // Data
-    let next = {
-        x: time(),
-        y: CLIENT_DATA[ CLIENT_DATA.length - 1 ]
-    }
-
-    chart.data.datasets[0].data.push( next );
-
-
-    chart.options.scales.xAxes[0].ticks.min = Math.max( 0, next.x - _timeWidth );
-    chart.options.scales.xAxes[0].ticks.max = Math.max( _timeWidth, next.x );
-
-    // Max
     chart.data.datasets[1].data = [
     {
-        x: 0    ,
+        x: chart.options.scales.xAxes[0].ticks.min,
         y: max
     },{
-        x: next.x + _timeWidth  ,
+        x: chart.options.scales.xAxes[0].ticks.max,
         y: max
     }];
-
-    // Update
-    chart.update();
-
+    
 }
 
 
@@ -294,7 +277,7 @@ function updateChart() {
 
 function updateCost() {
     cost += 1/FPS * ( -1*a + scalar * b );
-    console.log(`cost : -${a} + ${scalar} * ${b} = ${cost}`);
+    // console.log(`cost : -${a} + ${scalar} * ${b} = ${cost}`);
 
     earnings = max - cost;
 // For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b s
