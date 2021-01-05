@@ -15,8 +15,10 @@ function handle_StartButton() {
 
     StartButton.disabled = true;
 
-    if ( hasSlider )
+    if ( hasSlider ) {
         Slider.disabled = false;
+        handle_Slider();
+    }
 
     if ( hasStopButton )
         StopButton.disabled = false;
@@ -36,7 +38,7 @@ function stop_execution() {
 
     ContinueButton.disabled = false;
 
-    displayScore();
+    displayFeedback();
 }
 
 
@@ -56,10 +58,14 @@ function draw() { setTimeout(function() {
 
     // console.log(`time: ${time()}`);
 
+    /* Update Values */
+    updateMax();
+    updateCost();
+    
     /* Draw */
     updateChart();
 
-    /* Check Stopping Condition */ 
+    /* Check Stopping Condition */
     try {
         if ( !hasStopButton )
             checkStopCondition();

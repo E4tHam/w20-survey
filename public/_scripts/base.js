@@ -6,6 +6,9 @@
 const clamp = ( min, T, max ) => Math.max( min, Math.min( T, max ) );
 const goldenratio       = 0.61803;
 
+// cost function
+const a                 = 0.2;
+const b                 = 0.2;
 
 // page data
 const urlParams         = new URLSearchParams( window.location.search );
@@ -24,8 +27,8 @@ var hasStopButton       = false;
 const StartButton       = document.getElementById("StartButton");
 const ContinueButton    = document.getElementById("ContinueButton");
 
-const ScoreSpan         = document.getElementById("Score");
-const ScoreDiv          = document.getElementById("Score-Div");
+const EarningsSpan      = document.getElementById("Earnings-Span");
+const EarningsDiv       = document.getElementById("Earnings-Div");
 
 
 // firebase
@@ -66,7 +69,8 @@ const _timeWidth        = _stepSize * _maxTicksLimit;
 // test
 var max                 = 0;
 var scalar              = 1;
-var score               = NaN;
+var cost                = 0;
+var earnings            = NaN;
 class Stop { };
 
 
@@ -135,7 +139,7 @@ async function handle_ContinueButton() {
 
 
     // if final process
-    if ( PROCESS == processes.length-1 ) {
+    if ( PROCESS === processes.length-1 ) {
 
         await db.collection( "submissions" ).doc( CASE )
             .collection( TOKEN ).doc( "metadata" )
@@ -219,10 +223,7 @@ function initializeChart() {
                         suggestedMin: -10,
                         suggestedMax:  10,
 
-                        callback: function( label ) {
-                            label = Math.round( (label + Number.EPSILON ) * 10) / 10
-                            return Number.isInteger( label ) ? ( label + ".0" ) : label;
-                        }
+                        callback: function( label ) { return oneDecimalCallback( label ) }
                     }
                 }],
                 xAxes: [{
@@ -237,10 +238,7 @@ function initializeChart() {
                         maxRotation     : 0,
                         minRotation     : 0,
 
-                        callback: function( label ) {
-                            label = Math.round( (label + Number.EPSILON ) * 10) / 10
-                            return Number.isInteger( label ) ? ( label + ".0" ) : label;
-                        }
+                        callback: function( label ) { return oneDecimalCallback( label ) }
                     }
                 }]
             }
@@ -249,6 +247,10 @@ function initializeChart() {
 
 }
 
+function oneDecimalCallback( label ) {
+    label = Math.round( (label + Number.EPSILON ) * 10) / 10
+    return Number.isInteger( label ) ? ( label + ".0" ) : label;
+}
 
 function updateMax() {
     if ( CLIENT_DATA.length != 0 )
@@ -272,7 +274,6 @@ function updateChart() {
     chart.options.scales.xAxes[0].ticks.max = Math.max( _timeWidth, next.x );
 
     // Max
-    updateMax();
     chart.data.datasets[1].data = [
     {
         x: 0    ,
@@ -289,9 +290,18 @@ function updateChart() {
 
 
 
-// Score
+// Cost and Earnings
 
-function displayScore() {
-    ScoreSpan.innerHTML = score;
-    ScoreDiv.style.display = "block";
+function updateCost() {
+    cost += 1/FPS * ( -1*a + scalar * b );
+    console.log(`cost : -${a} + ${scalar} * ${b} = ${cost}`);
+
+    earnings = max - cost;
+// For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b s
+// where a and b are constants that we could also change.
+}
+
+function displayFeedback() {
+    EarningsSpan.innerHTML = earnings.toFixed(2);
+    EarningsDiv.style.display = "block";
 }

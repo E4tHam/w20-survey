@@ -18,14 +18,14 @@ function updateClientData() {
     }
 
     // if time has just begun
-    else if ( CLIENT_DATA.length == 0 ) {
+    else if ( CLIENT_DATA.length === 0 ) {
         CLIENT_DATA.push( SERVER_DATA[0] );
     }
 
     // if time is continuing
     else if (
-        frame % frames_per_point == 0
-        && CLIENT_DATA.length == point ) {
+        frame % frames_per_point === 0
+        && CLIENT_DATA.length === point ) {
 
         // slider logic
         CLIENT_DATA.push(

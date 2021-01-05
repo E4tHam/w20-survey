@@ -36,7 +36,7 @@ NameInput.disabled = false;
 
 handle_NameInput();
 function handle_NameInput() {
-    SubmitButton.disabled = ( NameInput.value == "" );
+    SubmitButton.disabled = ( NameInput.value === "" );
 }
 
 async function handle_SubmitButton() {
