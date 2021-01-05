@@ -39,6 +39,8 @@ function stop_execution() {
     } catch (error) { }
 
     ContinueButton.disabled = false;
+
+    displayScore();
 }
 
 

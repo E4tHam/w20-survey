@@ -6,6 +6,7 @@
 const clamp = ( min, T, max ) => Math.max( min, Math.min( T, max ) );
 const goldenratio       = 0.61803;
 
+
 // page data
 const urlParams         = new URLSearchParams( window.location.search );
 const CASE              = document.currentScript.getAttribute("case");
@@ -16,20 +17,28 @@ const DATA_SET          = ( CASE.indexOf( "Independent" ) !== -1 ) ? "independen
                         : ( CASE.indexOf( "Correlated"  ) !== -1 ) ? "correlated"
                         : "UNKNOWN";
 
+
 // page elements
 const StartButton       = document.getElementById("StartButton");
 const ContinueButton    = document.getElementById("ContinueButton");
+
+const ScoreSpan         = document.getElementById("Score");
+const ScoreDiv          = document.getElementById("Score-Div");
+
 
 // firebase
 const app               = firebase.app();
 const db                = firebase.firestore();
 
+
 // data from firebase
 var processes           = [ "temp" ];
 var SERVER_DATA         = [ 0 ];
 
+
 // load firebase data
 loadData();
+
 
 // data for firebase
 var Actions             = new Object();
@@ -46,13 +55,18 @@ const FPS               = 15;
 var frame               = NaN;
 const time              = () => frame/FPS;
 var paused              = true;
-var max                 = 0;
-var scalar              = 1;
-class Stop { };
 
 const _stepSize = 5;
 const _maxTicksLimit = 5;
 const _timeWidth = _stepSize * _maxTicksLimit;
+
+
+// test
+var max                 = 0;
+var scalar              = 1;
+var score               = NaN;
+class Stop { };
+
 
 
 
@@ -247,4 +261,13 @@ function updateChart() {
     // Update
     chart.update();
 
+}
+
+
+
+// Score
+
+function displayScore() {
+    ScoreSpan.innerHTML = score;
+    ScoreDiv.style.display = "block";
 }
