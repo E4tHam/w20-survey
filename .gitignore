@@ -68,6 +68,7 @@ node_modules/
 # Visual Studio Code
 .vscode/
 **/.vscode/
+.fuse*
 
 # Notes
 notes/

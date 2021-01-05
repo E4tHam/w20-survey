@@ -35,6 +35,8 @@ function updateClientData() {
 
 }
 
+// For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b s
+// where a and b are constants that we could also change.
 function updateCost() {
     let temp_scalar = CLIENT_DATA[ CLIENT_DATA.length - 1 ] / SERVER_DATA[ point ];
     cost += ( b * temp_scalar - a ) / FPS;

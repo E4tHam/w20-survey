@@ -18,7 +18,7 @@ function updateClientData() {
     // if time is continuing
     else {
         CLIENT_DATA.push(
-            CLIENT_DATA[ frame - 1 ]
+            CLIENT_DATA[ CLIENT_DATA.length - 1 ]
             + scalar * SERVER_DATA[ frame ]
         );
     }
@@ -28,6 +28,8 @@ function updateClientData() {
 
 }
 
+// For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b s
+// where a and b are constants that we could also change.
 function updateCost() {
     cost += ( b * scalar - a ) / FPS;
 }
