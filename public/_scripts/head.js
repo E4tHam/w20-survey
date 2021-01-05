@@ -41,8 +41,23 @@ function stop_execution() {
     displayFeedback();
 }
 
+var  timer_now;
+var  timer_then = Date.now();
+const timer_interval = 1000/FPS;
+var  timer_delta;
 
-function draw() { setTimeout(function() {
+function draw() {
+    
+    requestAnimationFrame( draw );
+
+    // FPS Control
+    timer_now = Date.now();
+    timer_delta = timer_now - timer_then;
+    if ( timer_delta < timer_interval ) 
+        return;
+    
+    timer_then = timer_now - ( timer_delta % timer_interval );
+
 
     /* Update Client Data or Stop */
     try {
@@ -78,5 +93,4 @@ function draw() { setTimeout(function() {
 
 
     frame++;
-    requestAnimationFrame( draw );
-}, 1000/FPS );}
+}
