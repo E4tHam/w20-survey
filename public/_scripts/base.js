@@ -247,8 +247,8 @@ function initializeChartBase() {
 }
 
 function oneDecimalCallback( label ) {
-    label = Math.round( (label + Number.EPSILON ) * 10) / 10
-    return Number.isInteger( label ) ? ( label + ".0" ) : label;
+    label = Math.round( ( label + Number.EPSILON ) * 10) / 10
+    return Number.isInteger( label ) ? ( label + ".0" ) : ( label + "" );
 }
 
 function updateMax() {
@@ -276,12 +276,12 @@ function updateMaxLineValue() {
 // Cost and Earnings
 
 function updateCost() {
-    cost += 1/FPS * ( -1*a + scalar * b );
-    // console.log(`cost : -${a} + ${scalar} * ${b} = ${cost}`);
+    
+    // For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b s
+    // where a and b are constants that we could also change.
+    cost += ( b * scalar - a ) / FPS;
 
     earnings = max - cost;
-// For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b s
-// where a and b are constants that we could also change.
 }
 
 function displayFeedback() {
