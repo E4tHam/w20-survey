@@ -279,8 +279,12 @@ function updateCost() {
     
     // For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b s
     // where a and b are constants that we could also change.
-    cost += ( b * scalar - a ) / FPS;
+    if ( DATA_SET === "correlated" )
+        cost += ( b * scalar - a ) / FPS;
+        
+}
 
+function updateEarnings() {
     earnings = max - cost;
 }
 

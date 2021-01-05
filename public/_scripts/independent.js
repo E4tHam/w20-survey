@@ -5,15 +5,15 @@
 const seconds_per_point = 3;
 const frames_per_point  = FPS*seconds_per_point;
 
+let point               = 0;
 
 function updateClientData() {
 
-    let point = Math.floor( frame/frames_per_point );
+    point = Math.floor( frame/frames_per_point );
 
     // if time is up
     if ( SERVER_DATA.length <= point ) {
         console.log("[WARNING]: Time is up!");
-        // debugger;
         throw new Stop();
     }
 
@@ -29,6 +29,15 @@ function updateClientData() {
             scalar * SERVER_DATA[ point ]
         );
     }
+
+    updateCost();
+    updateEarnings();
+
+}
+
+function updateCost() {
+    let temp_scalar = CLIENT_DATA[ CLIENT_DATA.length - 1 ] / SERVER_DATA[ point ];
+    cost += ( b * temp_scalar - a ) / FPS;
 }
 
 function updateChart() {

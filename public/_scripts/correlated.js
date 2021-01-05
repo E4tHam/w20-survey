@@ -4,20 +4,32 @@
 
 function updateClientData() {
 
+    // if time is up
     if ( SERVER_DATA.length <= frame ) {
         console.log("[WARNING]: Time is up!");
-        // debugger;
         throw new Stop();
     }
 
-    if ( CLIENT_DATA.length === 0 )
+    // if time has just begun
+    else if ( CLIENT_DATA.length === 0 ) {
         CLIENT_DATA.push( SERVER_DATA[0] );
+    }
 
-    else if ( CLIENT_DATA.length === frame )
+    // if time is continuing
+    else {
         CLIENT_DATA.push(
             CLIENT_DATA[ frame - 1 ]
             + scalar * SERVER_DATA[ frame ]
         );
+    }
+
+    updateCost();
+    updateEarnings();
+
+}
+
+function updateCost() {
+    cost += ( b * scalar - a ) / FPS;
 }
 
 
