@@ -67,7 +67,7 @@ const _timeWidth        = _stepSize * _maxTicksLimit;
 
 
 // test
-var max                 = 0;
+var max                 = Number.NEGATIVE_INFINITY;
 var scalar              = 1;
 var cost                = 0;
 var earnings            = NaN;
