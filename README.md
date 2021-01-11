@@ -15,3 +15,4 @@ Firebase Database: https://console.firebase.google.com/project/w21-survey/
 Packages Used:
 
  * [Chart.js](https://www.chartjs.org/)
+ * [JSON for Modern C++](https://github.com/nlohmann/json)
