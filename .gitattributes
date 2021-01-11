@@ -1,0 +1,6 @@
+
+# .gitattributes #
+
+# remove
+_src/       linguist-vendored
+**/_src/    linguist-vendored
