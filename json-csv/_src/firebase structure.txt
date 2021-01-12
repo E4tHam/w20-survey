@@ -1,0 +1,26 @@
+__collections__
+    submissions
+        Correlated_slider
+        Correlated_slider+stop
+        Correlated_stop
+        Independent_slider
+        Independent_slider+stop
+        Independent_stop
+            __collections__
+                {TOKEN}
+                    information
+                        name:
+                    metadata
+                        finished: true
+                        order: [...]
+                    0
+                    *
+                    *
+                    29
+                        SliderRecord: {...}
+                        StopTime: 0
+                        cost: 0
+                        data: [...]
+                        earnings: 0
+                        max: 0
+                        process_id: "xx"

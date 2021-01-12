@@ -46,6 +46,15 @@ async function handle_SubmitButton() {
     // calculate token
     set_token();
 
+    // // if token exists
+    // await db.collection( "submissions" ).doc( CASE )
+    //     .collection( TOKEN ).doc( "information" )
+    //     .get().then( doc => {
+    //         if ( doc.exists )
+    //             window.location.replace("../survey/");
+    //     });
+    
+
     // store all information
     await store_information();
 
