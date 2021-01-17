@@ -27,7 +27,6 @@ function updateClientData() {
 
     updateCost();
     updateEarnings();
-    updateCurrentStats();
 
 }
 
