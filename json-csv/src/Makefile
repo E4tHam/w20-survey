@@ -12,7 +12,7 @@ EXE		= jsoncsv
 SOURCES	= main.o
 HEADERS	=
 
-REMOVE	= out.txt
+REMOVE	= data/*
 
 CXX		= g++
 CXXFLAGS= --std=c++11
