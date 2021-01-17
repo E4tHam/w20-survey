@@ -53,6 +53,8 @@ int main() {
         return 1;
     }
 
+    std::cout << "Finished converting " << backup_file << " to CSVs." << std::endl;
+
     return 0;
 }
 
@@ -61,29 +63,35 @@ nlohmann::json outputCleanCase( const std::string & case_name, const nlohmann::j
 
     std::cout << "Parsing " << case_name << "." << std::endl;
 
-    nlohmann::json out;
+    nlohmann::json current_case;
     try {
-        out =  j.at( "__collections__" )
+        current_case =  j.at( "__collections__" )
                 .at( "submissions" )
                 .at( case_name )
                 .at( "__collections__" );
     }
-    catch( const nlohmann::detail::out_of_range & e ) {
+    catch ( const nlohmann::detail::out_of_range & e ) {
         std::cerr << case_name << " does not exist in Firebase." << std::endl;
-        return out;
+        return current_case;
     }
 
+    nlohmann::json out = current_case;
+    remove__collections__( out );
+
+
     // clean out
-    for ( auto it = out.begin(); it != out.end(); it++ ) {
+    for ( auto it = current_case.cbegin(); it != current_case.cend(); it++ ) {
+
         if ( it.value().at("metadata").at("finished") == true ) {
 
-            it.value().at("metadata").erase("finished");
+            std::cout << "  Cleaning and adding " << it.key() << "." << std::endl;
 
-            remove__collections__( it.value() );
+            current_case.at( it.key() ).at("metadata").erase("finished");
 
         }
         else {
-            out.erase( it );
+            std::cout << "  Removing " << it.key() << " because the survey was incomplete." << std::endl;
+            out.erase( it.key() );
         }
     }
 
@@ -201,7 +209,7 @@ void outputCSV( const std::string & filename, const nlohmann::json & j ) {
                                 ofs << process_data_it.value().at( frame );
                             to_break = false;
                         }
-                        catch( const nlohmann::detail::out_of_range & e ) { }
+                        catch ( const nlohmann::detail::out_of_range & e ) { }
                         ofs << ",";
                     }
                     else if ( process_data_it.value().is_object() ) {
@@ -209,7 +217,7 @@ void outputCSV( const std::string & filename, const nlohmann::json & j ) {
                             ofs << process_data_it.value().at( std::to_string( frame ) );
                             to_break = false;
                         }
-                        catch( const nlohmann::detail::out_of_range & e ) { }
+                        catch ( const nlohmann::detail::out_of_range & e ) { }
                         ofs << ",";
                     }
                     else {
@@ -229,6 +237,5 @@ void outputCSV( const std::string & filename, const nlohmann::json & j ) {
         ofs << "\n\n\n\n";
     }
 
-    // ofs << 
     ofs.close();
 }
