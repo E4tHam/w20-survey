@@ -25,6 +25,7 @@ function handle_StartButton() {
     if ( hasStopButton )
         StopButton.disabled = false;
 
+    toggleVisibility( CurrentValuesDiv );
     draw();
 }
 
@@ -40,8 +41,9 @@ async function stop_execution() {
     if ( hasStopButton )
         StopButton.disabled = true;
 
-
-    displayFeedback();
+    toggleVisibility( CurrentValuesDiv );
+    updateFinalStats();
+    toggleVisibility( FinalValuesDiv );
 
     // save the actions and CLIENT_DATA
     await storeProccessData();
@@ -88,6 +90,7 @@ function draw() {
     /* Update Values */
     updateMax();
     updateCost();
+    updateCurrentStats();
 
     /* Draw */
     updateChart();

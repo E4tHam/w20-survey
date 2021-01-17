@@ -22,7 +22,7 @@
     <script defer src="/__/firebase/8.1.2/firebase-analytics.js"></script>
     <script defer src="/__/firebase/8.1.2/firebase-remote-config.js"></script>
     <script defer src="/__/firebase/8.1.2/firebase-performance.js"></script>
-    <!-- 
+    <!--
         initialize the SDK after all desired features are loaded, set useEmulator to false
         to avoid connecting the SDK to running emulators.
     -->
@@ -40,13 +40,23 @@
     <div id="Chart-Div">
         <canvas id="Chart-Canvas"></canvas>
     </div>
-        
+
+    <div id="CurrentValues" style="display: none">
+        Current Value: <span id="Current__Value"></span> <br>
+        Current Max: <span id="Current__Max"></span> <br>
+    </div>
+
+    <div id="FinalValues" style="display: none">
+        Final Max: <span id="Final__Max"></span> <br>
+        Final Cost: <span id="Final__Cost"></span> <br>
+        Final Earnings: <span id="Final__Earnings"></span> <br>
+    </div>
+
     <button onclick="handle_StartButton()" id="StartButton" disabled>Start</button>
     <input type="range" min="1" max="5" value="3" id="Slider" oninput="handle_Slider()" disabled>
     <button onclick="handle_StopButton()" id="StopButton" disabled>Stop</button>
     <br>
-    <div id="Earnings-Div" style="display: none">Your earnings were <span id="Earnings-Span"></span>!</div>
     <button onclick="handle_ContinueButton()" id="ContinueButton" disabled>Continue</button>
-    
+
 </body>
 </html>

@@ -17,11 +17,6 @@ function updateClientData() {
         throw new Stop();
     }
 
-    // if time has just begun
-    else if ( CLIENT_DATA.length === 0 ) {
-        CLIENT_DATA.push( SERVER_DATA[0] );
-    }
-
     // if time is continuing
     else if ( frame % frames_per_point === 0 ) {
         // slider logic
@@ -32,11 +27,12 @@ function updateClientData() {
 
     updateCost();
     updateEarnings();
+    updateCurrentStats();
 
 }
 
 // For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b s
-// where a and b are constants that we could also change.
+// where a and b are constants.
 function updateCost() {
     let temp_scalar = CLIENT_DATA[ CLIENT_DATA.length - 1 ] / SERVER_DATA[ point ];
     cost += ( b * temp_scalar - a ) / FPS;
@@ -70,9 +66,9 @@ function updateChart() {
 
 
 function initializeChart() {
-    
+
     initializeChartBase();
 
     chart.data.datasets[0].borderWidth = 2;
-    
+
 }

@@ -44,16 +44,20 @@ async function handle_SubmitButton() {
     SubmitButton.disabled = true;
 
     // calculate token
-    set_token();
+    TOKEN = return_token();
 
-    // // if token exists
-    // await db.collection( "submissions" ).doc( CASE )
-    //     .collection( TOKEN ).doc( "information" )
-    //     .get().then( doc => {
-    //         if ( doc.exists )
-    //             window.location.replace("../survey/");
-    //     });
-    
+    // if token already exists in firebase
+    await db.collection( "submissions" ).doc( CASE )
+        .collection( TOKEN ).doc( "metadata" )
+        .get().then( doc => {
+            if ( doc.exists )
+                window.location.replace(
+                    "../survey/?"
+                    + "token=" + TOKEN
+                );
+        })
+        .catch( )
+    ;
 
     // store all information
     await store_information();
@@ -85,8 +89,8 @@ function assign_process_order() {
 }
 
 
-function set_token() {
-    TOKEN = NameInput.value;
+function return_token() {
+    return NameInput.value;
 }
 
 

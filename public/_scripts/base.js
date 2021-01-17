@@ -15,6 +15,7 @@ const urlParams         = new URLSearchParams( window.location.search );
 const CASE              = document.currentScript.getAttribute("case");
 const TOKEN             = urlParams.get("token");
 const PROCESS           = parseInt( urlParams.get("process") );
+if ( TOKEN == null ) handle_noToken();
 
 const DATA_SET          = ( CASE.indexOf( "Independent" ) !== -1 ) ? "independent"
                         : ( CASE.indexOf( "Correlated"  ) !== -1 ) ? "correlated"
@@ -27,9 +28,14 @@ var hasStopButton       = false;
 const StartButton       = document.getElementById("StartButton");
 const ContinueButton    = document.getElementById("ContinueButton");
 
-const EarningsSpan      = document.getElementById("Earnings-Span");
-const EarningsDiv       = document.getElementById("Earnings-Div");
+const CurrentValuesDiv  = document.getElementById("CurrentValues");
+const FinalValuesDiv    = document.getElementById("FinalValues");
 
+const CurrentValueSpan  = document.getElementById("Current__Value");
+const CurrentMaxSpan    = document.getElementById("Current__Max");
+const FinalMaxSpan      = document.getElementById("Final__Max");
+const FinalCostSpan     = document.getElementById("Final__Cost");
+const FinalEarningsSpan = document.getElementById("Final__Earnings");
 
 // firebase
 const app               = firebase.app();
@@ -76,6 +82,11 @@ class Stop { };
 
 
 
+function handle_noToken() {
+    window.location.replace(
+        "../start/"
+    );
+}
 
 
 /* Firebase */
@@ -177,7 +188,7 @@ function incrementProccess() {
         }
         // if not final process
         else if ( PROCESS < processes.length-1 ) {
-            
+
             return db.collection( "submissions" ).doc( CASE )
                 .collection( TOKEN ).doc( "metadata" )
                 .set({
@@ -186,9 +197,9 @@ function incrementProccess() {
                     order: processes
                 })
             .then(function() {
-                console.log("Test document successfully incremented!");
+                console.log("Current proccess metadata successfully incremented!");
             }).catch(function(error) {
-                console.error("Error incrementing process document: ", error);
+                console.error("Error incrementing current proccess metadata: ", error);
             });
 
         }
@@ -198,7 +209,7 @@ function incrementProccess() {
 /* Chart */
 
 function initializeChartBase() {
-    
+
     chart = new Chart(ctx, {
         type: 'line',
 
@@ -276,7 +287,7 @@ function updateMaxLineValue() {
         x: chart.options.scales.xAxes[0].ticks.max,
         y: max
     }];
-    
+
 }
 
 
@@ -287,7 +298,22 @@ function updateEarnings() {
     earnings = max - cost;
 }
 
-function displayFeedback() {
-    EarningsSpan.innerHTML = earnings.toFixed(2);
-    EarningsDiv.style.display = "block";
+function updateCurrentStats() {
+    CurrentValueSpan.innerHTML = CLIENT_DATA[ CLIENT_DATA.length - 1 ].toFixed(2);
+    CurrentMaxSpan.innerHTML = max.toFixed(2);
+}
+
+function updateFinalStats() {
+    FinalMaxSpan.innerHTML      = max.toFixed(2);
+    FinalCostSpan.innerHTML     = cost.toFixed(2);
+    FinalEarningsSpan.innerHTML = earnings.toFixed(2);
+}
+
+function toggleVisibility( div ){
+    if ( div.style.display == "none" ) {
+        div.style.display = "block";
+    }
+    else {
+        div.style.display = "none";
+    }
 }

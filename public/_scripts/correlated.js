@@ -25,18 +25,19 @@ function updateClientData() {
 
     updateCost();
     updateEarnings();
+    updateCurrentStats();
 
 }
 
-// For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b s
-// where a and b are constants that we could also change.
+// For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b*s
+// where a and b are constants.
 function updateCost() {
     cost += ( b * scalar - a ) / FPS;
 }
 
 
 function updateChart() {
-    
+
     let next = {
         x: time(),
         y: CLIENT_DATA[ CLIENT_DATA.length - 1 ]
@@ -55,7 +56,7 @@ function updateChart() {
 
 
 function initializeChart() {
-    
+
     initializeChartBase();
 
     chart.data.datasets[0].borderWidth = 1;

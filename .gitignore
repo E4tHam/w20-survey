@@ -73,8 +73,5 @@ node_modules/
 # Notes
 notes/
 
-# Backup
-backup/
-
 # Secrets
 **/SECRET*
