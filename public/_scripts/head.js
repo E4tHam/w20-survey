@@ -42,6 +42,8 @@ async function stop_execution() {
         StopButton.disabled = true;
 
     toggleVisibility( CurrentValuesDiv );
+    
+    updateEarnings();
     updateFinalStats();
     toggleVisibility( FinalValuesDiv );
 
@@ -90,7 +92,6 @@ function draw() {
     /* Update Values */
     updateMax();
     updateCost();
-    updateEarnings();
     updateCurrentStats();
 
     /* Draw */
