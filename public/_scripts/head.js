@@ -90,6 +90,7 @@ function draw() {
     /* Update Values */
     updateMax();
     updateCost();
+    updateEarnings();
     updateCurrentStats();
 
     /* Draw */

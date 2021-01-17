@@ -26,7 +26,6 @@ function updateClientData() {
     }
 
     updateCost();
-    updateEarnings();
 
 }
 
