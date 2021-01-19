@@ -23,7 +23,7 @@ db.collection( "onload_data" ).doc( DATA_SET )
         .then( doc => {
             processes = doc.data().ids;
         }).catch(function(error) {
-            console.error("Error adding data: ", error);
+            console.error( "Error loading processes: ", error );
             alert( "Please try again later." );
         })
 ;

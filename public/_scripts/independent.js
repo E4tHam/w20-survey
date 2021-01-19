@@ -7,6 +7,8 @@ const frames_per_point  = FPS*seconds_per_point;
 
 let point               = 0;
 
+var slider_scalar       = 1;
+
 function updateClientData() {
 
     point = Math.floor( frame/frames_per_point );
@@ -21,7 +23,7 @@ function updateClientData() {
     else if ( frame % frames_per_point === 0 ) {
         // slider logic
         CLIENT_DATA.push(
-            scalar * SERVER_DATA[ point ]
+            slider_scalar * SERVER_DATA[ point ]
         );
     }
 

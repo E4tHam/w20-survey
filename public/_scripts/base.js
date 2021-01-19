@@ -64,6 +64,7 @@ var chart;
 
 const FPS               = 15;
 var frame               = NaN;
+var data_t              = NaN;
 const time              = () => frame/FPS;
 var paused              = true;
 
@@ -74,7 +75,6 @@ const _timeWidth        = _stepSize * _maxTicksLimit;
 
 // test
 var max                 = Number.NEGATIVE_INFINITY;
-var scalar              = 1;
 var cost                = 0;
 var earnings            = NaN;
 class Stop { };

@@ -1,27 +1,20 @@
 
 /* correlated.js */
 
+var slider_speed        = 1;
 
 function updateClientData() {
 
+    let data_i = Math.round( data_t );
+
     // if time is up
-    if ( SERVER_DATA.length <= frame ) {
+    if ( SERVER_DATA.length <= data_i ) {
         console.log("[WARNING]: Time is up!");
         throw new Stop();
     }
 
-    // if time has just begun
-    else if ( CLIENT_DATA.length === 0 ) {
-        CLIENT_DATA.push( SERVER_DATA[0] );
-    }
-
-    // if time is continuing
-    else {
-        CLIENT_DATA.push(
-            CLIENT_DATA[ CLIENT_DATA.length - 1 ]
-            + scalar * SERVER_DATA[ frame ]
-        );
-    }
+    // push 
+    CLIENT_DATA.push( SERVER_DATA[ data_i ] );
 
     updateCost();
 
@@ -30,7 +23,7 @@ function updateClientData() {
 // For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b*s
 // where a and b are constants.
 function updateCost() {
-    cost += ( b * scalar - a ) / FPS;
+    cost += ( b * slider_speed - a ) / FPS;
 }
 
 

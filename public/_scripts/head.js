@@ -13,6 +13,7 @@ var animationFrameRequest   = NaN;
 
 function handle_StartButton() {
     frame = 0;
+    data_t = 0;
     paused = false;
 
     StartButton.disabled = true;
@@ -31,6 +32,7 @@ function handle_StartButton() {
 
 async function stop_execution() {
     frame = NaN;
+    data_t = NaN;
     paused = true;
 
     cancelAnimationFrame(animationFrameRequest);
@@ -42,7 +44,7 @@ async function stop_execution() {
         StopButton.disabled = true;
 
     toggleVisibility( CurrentValuesDiv );
-    
+
     updateEarnings();
     updateFinalStats();
     toggleVisibility( FinalValuesDiv );
@@ -108,6 +110,7 @@ function draw() {
         return;
     }
 
+    data_t += ( hasSlider && DATA_SET == "correlated" ) ? slider_speed : 1;
 
     frame++;
 }

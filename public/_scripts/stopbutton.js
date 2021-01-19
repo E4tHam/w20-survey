@@ -13,4 +13,5 @@ function handle_StopButton() {
     paused = true;
     Actions[ "StopTime" ] = time();
     frame = NaN;
+    data_t = NaN;
 }
