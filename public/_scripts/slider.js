@@ -19,6 +19,6 @@ function handle_Slider() {
         slider_scalar = slider_value;
     }
     else if ( DATA_SET == "correlated" ) {
-        slider_speed = slider_value / 5;
+        slider_speed = slider_value;
     }
 }

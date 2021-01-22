@@ -110,7 +110,9 @@ function draw() {
         return;
     }
 
-    data_t += ( hasSlider && DATA_SET == "correlated" ) ? slider_speed : 1;
+    data_t += ( hasSlider && DATA_SET == "correlated" ) ? (
+        slider_speed * slider_speed * 100 / FPS
+    )       : 100;
 
     frame++;
 }
