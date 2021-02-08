@@ -63,7 +63,7 @@ async function handle_SubmitButton() {
     await store_information();
 
     // set process to 0
-    assign_process_order();
+    // assign_process_order();
     await store_process();
 
     // redirect
