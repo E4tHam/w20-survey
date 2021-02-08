@@ -89,8 +89,6 @@ function draw() {
         return;
     }
 
-    // console.log(`time: ${time()}`);
-
     /* Update Values */
     updateMax();
     updateCost();
@@ -111,8 +109,8 @@ function draw() {
     }
 
     data_t += ( hasSlider && DATA_SET == "correlated" ) ? (
-        slider_speed * slider_speed * 100 / FPS
-    )       : 100;
+        slider_speed * slider_speed * 15 / FPS
+    )       : 15 / FPS;
 
     frame++;
 }

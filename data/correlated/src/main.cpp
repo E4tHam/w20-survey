@@ -36,10 +36,14 @@ int main() {
 
     for ( size_t j = 0; j < in.at(0).size(); j ++ ) {
         ofs << "[";
-        for ( size_t i = 0; i < in.size(); i += 10 ) {
-            ofs << in.at(i).at(j) << ',';
+        for ( size_t i = 0; i < in.size(); i += 1 ) {
+            ofs << in.at(i).at(j);
+            if ( i != in.size()-1 )
+                ofs << ',';
         }
-        ofs << "]," << std::endl;
+        ofs << ']';
+        if ( j != in.at(0).size()-1 )
+            ofs << ',' << std::endl;
     }
 
 

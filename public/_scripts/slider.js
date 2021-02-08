@@ -7,18 +7,23 @@ const Slider                = document.getElementById("Slider");
 
 Actions[ "SliderRecord" ]   = new Object();
 
-
+let SLIDER_recent           = NaN;
 
 function handle_Slider() {
 
-    let slider_value = parseInt( Slider.value );
+    let SLIDER_current = parseFloat( Slider.value );
 
-    Actions[ "SliderRecord" ][ frame ] = slider_value;
+    if ( SLIDER_current == SLIDER_recent )
+        return;
+    
+    SLIDER_recent = SLIDER_current;
+
+    Actions[ "SliderRecord" ][ frame ] = SLIDER_current;
 
     if ( DATA_SET == "independent" ) {
-        slider_scalar = slider_value;
+        slider_scalar = SLIDER_current;
     }
     else if ( DATA_SET == "correlated" ) {
-        slider_speed = slider_value;
+        slider_speed = SLIDER_current;
     }
 }
