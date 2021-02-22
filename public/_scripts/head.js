@@ -20,6 +20,7 @@ function handle_StartButton() {
 
     if ( hasSlider ) {
         Slider.disabled = false;
+        Slider.style.opacity = 1;
         handle_Slider();
     }
 
@@ -37,8 +38,10 @@ async function stop_execution() {
 
     cancelAnimationFrame(animationFrameRequest);
 
-    if ( hasSlider )
+    if ( hasSlider ) {
         Slider.disabled = true;
+        Slider.style.opacity = 0.5;
+    }
 
     if ( hasStopButton )
         StopButton.disabled = true;
@@ -55,7 +58,10 @@ async function stop_execution() {
     // save the next proccess
     await incrementProccess();
 
+    toggleVisibility( ControlsDiv );
+    toggleVisibility( ContinueDiv );
     ContinueButton.disabled = false;
+
 }
 
 var  timer_now;

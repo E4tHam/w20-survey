@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Survey</title>
 
-    <link rel="stylesheet" href="../../_styles/survey.css">
+    <link rel="stylesheet" href="/_styles/survey.css">
+    <link rel="stylesheet" href="/_styles/slider.css">
 
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/8.1.2/firebase-app.js"></script>
@@ -30,33 +31,48 @@
 
     <script defer src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
-    <script defer src="../../_scripts/base.js" case="Independent_slider+stop"></script>
-    <script defer src="../../_scripts/independent.js"></script>
-    <script defer src="../../_scripts/slider.js"></script>
-    <script defer src="../../_scripts/stopbutton.js"></script>
-    <script defer src="../../_scripts/head.js"></script>
+    <script defer src="/_scripts/base.js" case="Independent_slider+stop"></script>
+    <script defer src="/_scripts/independent.js"></script>
+    <script defer src="/_scripts/slider.js"></script>
+    <script defer src="/_scripts/stopbutton.js"></script>
+    <script defer src="/_scripts/head.js"></script>
 </head>
 <body>
-    <div id="Chart-Div">
-        <canvas id="Chart-Canvas"></canvas>
+    <h1 class="centered">Round: <span id="Round-Number"></span></h1>
+    <div class="centered flex">
+        <div class="stats">
+            <div id="CurrentValues" style="display: none">
+                Current<br>Value:<br><span id="Current__Value"></span>
+                <br><br>
+                Current<br>Max:<br><span id="Current__Max"></span>
+            </div>
+            
+            <div id="FinalValues" style="display: none">
+                Final<br>Max:<br><span id="Final__Max"></span>
+                <br><br>
+                Final<br>Cost:<br><span id="Final__Cost"></span>
+                <br><br>
+                Final<br>Earnings:<br><span id="Final__Earnings"></span>
+            </div>
+        </div>
+        <div id="Chart-Div" class="center"><canvas id="Chart-Canvas"></canvas></div>
     </div>
 
-    <div id="CurrentValues" class="stats" style="display: none">
-        Current Value: <span id="Current__Value"></span> <br>
-        Current Max: <span id="Current__Max"></span> <br>
-    </div>
+    <div id="ControlsDiv">
+        
+        <div id="SliderDiv">
+            Breadth of search: <input type="range" min="1" max="3" step="0.01" value="1" id="Slider" oninput="handle_Slider()" onchange="handle_Slider()" disabled>
+        </div>
 
-    <div id="FinalValues" class="stats" style="display: none">
-        Final Max: <span id="Final__Max"></span> <br>
-        Final Cost: <span id="Final__Cost"></span> <br>
-        Final Earnings: <span id="Final__Earnings"></span> <br>
+        <div>
+            <button onclick="handle_StartButton()" id="StartButton" disabled>Start</button>
+        <button onclick="handle_StopButton()" id="StopButton" disabled>Stop</button>
+        </div>
+        <br>
     </div>
-
-    <button onclick="handle_StartButton()" id="StartButton" disabled>Start</button>
-    <input type="range" min="1" max="3" step="0.01" value="1" id="Slider" oninput="handle_Slider()" onchange="handle_Slider()" disabled>
-    <button onclick="handle_StopButton()" id="StopButton" disabled>Stop</button>
-    <br>
-    <button onclick="handle_ContinueButton()" id="ContinueButton" disabled>Continue</button>
+    <div id="ContinueDiv" class="centered" style="display: none;">
+        <button onclick="handle_ContinueButton()" id="ContinueButton" disabled>Continue</button>
+    </div>
 
 </body>
 </html>

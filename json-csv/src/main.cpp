@@ -19,7 +19,7 @@ const uint8_t FPS = 15;
 const uint8_t seconds_per_point = 3;
 
 const std::string backup_file = ".backup.json";
-const std::string output_dir = ".data/";
+const std::string output_dir = "data/";
 
 const unsigned char _NUM_CASES = 6;
 const std::string _CASES[ _NUM_CASES ] = {

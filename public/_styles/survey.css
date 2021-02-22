@@ -5,7 +5,7 @@
 /* Variables */
 :root {
     --golden-ratio: 0.61803;
-    --canvas-width: min( 1200px, calc( 100vw - 20px ) );
+    --canvas-width: min( 800px, calc( 100vw - 100px - 2rem ) );
     --canvas-height: calc( var(--canvas-width) * var(--golden-ratio) );
 }
 
@@ -14,8 +14,12 @@ html,
 body {
     display: flex;
     justify-content: center;
-    align-items: center;
     flex-direction: column;
+    margin: 1em;
+    font-size: 20px;
+}
+body > * {
+    margin: 0;
 }
 
 /* Canvas */
@@ -26,7 +30,46 @@ body {
 
 /* Other */
 .centered {
-    text-align: center !important;
     margin-left: auto !important;
     margin-right: auto !important;
+}
+
+.flex {
+    display: flex;
+}
+
+h1 {
+    font-weight: 100;
+    font-size: 1.5rem;
+}
+
+button {
+    padding: 1em;
+    font-size: inherit;
+    background-color: #a9da49;
+    cursor: pointer;
+}
+button:disabled {
+    opacity: .6;
+    cursor: initial;
+}
+
+#ControlsDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+#ControlsDiv > * {
+    margin: 1em;
+}
+
+.stats {
+    width: 100px;
+}
+#Slider {
+    width: auto !important;
+}
+#SliderDiv {
+    color: #5c7e17;
 }

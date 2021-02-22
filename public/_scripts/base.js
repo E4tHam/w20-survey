@@ -15,7 +15,10 @@ const urlParams         = new URLSearchParams( window.location.search );
 const CASE              = document.currentScript.getAttribute("case");
 const TOKEN             = urlParams.get("token");
 const PROCESS           = parseInt( urlParams.get("process") );
+const PRACTICE          = ( urlParams.get("practice") != null );
+
 if ( TOKEN == null ) handle_noToken();
+document.getElementById( "Round-Number" ).innerHTML = ( PROCESS + 1 );
 
 const DATA_SET          = ( CASE.indexOf( "Independent" ) !== -1 ) ? "independent"
                         : ( CASE.indexOf( "Correlated"  ) !== -1 ) ? "correlated"
@@ -23,6 +26,7 @@ const DATA_SET          = ( CASE.indexOf( "Independent" ) !== -1 ) ? "independen
 
 var hasSlider           = false;
 var hasStopButton       = false;
+
 
 // page elements
 const StartButton       = document.getElementById("StartButton");
@@ -36,6 +40,8 @@ const CurrentMaxSpan    = document.getElementById("Current__Max");
 const FinalMaxSpan      = document.getElementById("Final__Max");
 const FinalCostSpan     = document.getElementById("Final__Cost");
 const FinalEarningsSpan = document.getElementById("Final__Earnings");
+const ControlsDiv       = document.getElementById( "ControlsDiv" );
+const ContinueDiv       = document.getElementById( "ContinueDiv" );
 
 // firebase
 const app               = firebase.app();
@@ -170,39 +176,39 @@ function storeProccessData() {
 
 
 function incrementProccess() {
-        // if final process
-        if ( PROCESS === processes.length-1 ) {
+    // if final process
+    if ( PROCESS === processes.length-1 ) {
 
-            return db.collection( "submissions" ).doc( CASE )
-                .collection( TOKEN ).doc( "metadata" )
-                .set({
-                    finished: true,
-                    order: processes
-                })
-            .then(function() {
-                console.log("Process data updated.");
-            }).catch(function(error) {
-                console.error("Error updating data: ", error);
-            });
+        return db.collection( "submissions" ).doc( CASE )
+            .collection( TOKEN ).doc( "metadata" )
+            .set({
+                finished: true,
+                order: processes
+            })
+        .then(function() {
+            console.log("Process data updated.");
+        }).catch(function(error) {
+            console.error("Error updating data: ", error);
+        });
 
-        }
-        // if not final process
-        else if ( PROCESS < processes.length-1 ) {
+    }
+    // if not final process
+    else if ( PROCESS < processes.length-1 ) {
 
-            return db.collection( "submissions" ).doc( CASE )
-                .collection( TOKEN ).doc( "metadata" )
-                .set({
-                    finished: false,
-                    current: ( PROCESS + 1 ),
-                    order: processes
-                })
-            .then(function() {
-                console.log("Current proccess metadata successfully incremented!");
-            }).catch(function(error) {
-                console.error("Error incrementing current proccess metadata: ", error);
-            });
+        return db.collection( "submissions" ).doc( CASE )
+            .collection( TOKEN ).doc( "metadata" )
+            .set({
+                finished: false,
+                current: ( PROCESS + 1 ),
+                order: processes
+            })
+        .then(function() {
+            console.log("Current proccess metadata successfully incremented!");
+        }).catch(function(error) {
+            console.error("Error incrementing current proccess metadata: ", error);
+        });
 
-        }
+    }
 }
 
 
@@ -257,6 +263,11 @@ function initializeChartBase() {
                         minRotation     : 0,
 
                         callback: function( label ) { return oneDecimalCallback( label ) }
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Seconds",
+                        fontSize: 15
                     }
                 }]
             }
