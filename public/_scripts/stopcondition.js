@@ -14,7 +14,8 @@ const d = 5;
 // Stop when X > t where t is some constant
 const t = 5;
 
-document.getElementById( "IndependentSliderStopCondition" ).innerHTML = t;
+if ( DATA_SET == "independent" )
+    document.getElementById( "IndependentSliderStopCondition" ).innerHTML = t;
 
 function checkStopCondition() {
     // console.log("checking condition");
