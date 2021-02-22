@@ -95,9 +95,11 @@ function return_token() {
 
 
 function store_information() {
+    let date = new Date();
     return db.collection( "submissions" ).doc( CASE )
         .collection( TOKEN ).doc( "information" ).set({
-            name: NameInput.value
+            name: NameInput.value,
+            date: date.toUTCString()
         })
     .then(function() {
         console.log("Submission successfully written!");
