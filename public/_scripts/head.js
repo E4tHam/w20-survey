@@ -52,8 +52,10 @@ async function stop_execution() {
     updateFinalStats();
     toggleVisibility( FinalValuesDiv );
 
-    // save the actions and CLIENT_DATA
-    await storeProccessData();
+    if ( !PRACTICE ) {
+        // save the actions and CLIENT_DATA
+        await storeProccessData();
+    }
 
     // save the next proccess
     await incrementProccess();

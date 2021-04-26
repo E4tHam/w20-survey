@@ -18,7 +18,7 @@ const PROCESS           = parseInt( urlParams.get("process") );
 const PRACTICE          = ( urlParams.get("practice") != null );
 
 if ( TOKEN == null ) handle_noToken();
-document.getElementById( "Round-Number" ).innerHTML = ( PROCESS + 1 );
+document.getElementById( "Round-Label" ).innerHTML = (PRACTICE?"Practice ":"") + "Round " + ( PROCESS + 1 );
 
 const DATA_SET          = ( CASE.indexOf( "Independent" ) !== -1 ) ? "independent"
                         : ( CASE.indexOf( "Correlated"  ) !== -1 ) ? "correlated"
@@ -51,6 +51,10 @@ const db                = firebase.firestore();
 // data from firebase
 var processes           = [ "temp" ];
 var SERVER_DATA         = [ 0 ];
+const practices =
+    (DATA_SET=="independent") ? ["practice_01","practice_01","practice_01","practice_02","practice_02","practice_02","practice_03","practice_03","practice_03"] :
+    (DATA_SET=="correlated")  ? ["practice_v01","practice_v01","practice_v01","practice_v02","practice_v02","practice_v02","practice_v03","practice_v03","practice_v03"] :
+    ["error"];
 
 
 // load firebase data
@@ -98,32 +102,35 @@ function handle_noToken() {
 /* Firebase */
 
 async function loadData() {
-    //  if URL process number is not firebase process number
-    //      redirect
+    //  if URL is not correct, redirect
     await db.collection( "submissions" ).doc( CASE )
             .collection( TOKEN ).doc( "metadata" ).get()
             .then( doc => {
-                if ( doc.data().finished == true )
+                if ( doc.data().finished == true ) // if finished, go to done
                     window.location.replace(
                         "../../done"
                     );
-                else if ( doc.data().current != PROCESS )
+                else if (
+                    doc.data().current != PROCESS
+                    || doc.data().finished_practice === PRACTICE
+                )   // if not at specified process, go to correct process
                     window.location.replace(
                         "./?token=" + TOKEN
                         + "&process="  + doc.data().current
+                        + (doc.data().finished_practice?"":"&practice")
                     );
 
+                // load order
                 processes = doc.data().order;
         })
     ;
 
     // console.log( `Retrieving process number ${PROCESS}: ${processes[PROCESS]}.` );
     await db.collection( "onload_data" ).doc( DATA_SET )
-        .collection( "processes" ).doc( ""+processes[PROCESS] )
+        .collection( PRACTICE?"practice":"processes" ).doc( PRACTICE?practices[PROCESS]:processes[PROCESS] )
         .get()
         .then( doc => {
             SERVER_DATA = doc.data().data;
-            // console.log( SERVER_DATA );
             StartButton.disabled = false;
         })
     ;
@@ -137,16 +144,32 @@ async function handle_ContinueButton() {
     ContinueButton.disabled = true;
 
     // redirect to next page
-    if ( PROCESS === processes.length-1 ) {
-        window.location.replace(
-            "../../done"
-        );
-    }
-    else if ( PROCESS < processes.length-1 ) {
-        window.location.replace(
-            "./?token=" + TOKEN
-            + "&process="  + ( PROCESS + 1 )
-        );
+    if ( PRACTICE ) {
+        if ( PROCESS === 8 ) {
+            window.location.replace(
+                "./?token=" + TOKEN
+                + "&process=0"
+            );
+        }
+        else if ( PROCESS < 8 ) {
+            window.location.replace(
+                "./?token=" + TOKEN
+                + "&process="  + ( PROCESS + 1 )
+                + "&practice"
+            );
+        }
+    } else {
+        if ( PROCESS === processes.length-1 ) {
+            window.location.replace(
+                "../../done"
+            );
+        }
+        else if ( PROCESS < processes.length-1 ) {
+            window.location.replace(
+                "./?token=" + TOKEN
+                + "&process="  + ( PROCESS + 1 )
+            );
+        }
     }
 }
 
@@ -176,39 +199,73 @@ function storeProccessData() {
 
 
 function incrementProccess() {
-    // if final process
-    if ( PROCESS === processes.length-1 ) {
-
-        return db.collection( "submissions" ).doc( CASE )
-            .collection( TOKEN ).doc( "metadata" )
-            .set({
-                finished: true,
-                order: processes
-            })
-        .then(function() {
-            console.log("Process data updated.");
-        }).catch(function(error) {
-            console.error("Error updating data: ", error);
-        });
-
+    if ( PRACTICE ) {
+        // if final practice round
+        if ( PROCESS === 8 ) {
+            return db.collection( "submissions" ).doc( CASE )
+                .collection( TOKEN ).doc( "metadata" )
+                .set({
+                    finished_practice: true,
+                    finished: false,
+                    current: 0,
+                    order: processes
+                })
+            .then(function() {
+                console.log("Process data updated.");
+            }).catch(function(error) {
+                console.error("Error updating data: ", error);
+            });
+        }
+        // if not final practice round
+        else if ( PROCESS < 8 ) {
+            return db.collection( "submissions" ).doc( CASE )
+                .collection( TOKEN ).doc( "metadata" )
+                .set({
+                    finished_practice: false,
+                    finished: false,
+                    current: ( PROCESS + 1 ),
+                    order: processes
+                })
+            .then(function() {
+                console.log("Current proccess metadata successfully incremented!");
+            }).catch(function(error) {
+                console.error("Error incrementing current proccess metadata: ", error);
+            });
+        }
+    } else {
+        // if final process
+        if ( PROCESS === processes.length-1 ) {
+            return db.collection( "submissions" ).doc( CASE )
+                .collection( TOKEN ).doc( "metadata" )
+                .set({
+                    finished_practice: true,
+                    finished: true,
+                    order: processes
+                })
+            .then(function() {
+                console.log("Process data updated.");
+            }).catch(function(error) {
+                console.error("Error updating data: ", error);
+            });
+        }
+        // if not final process
+        else if ( PROCESS < processes.length-1 ) {
+            return db.collection( "submissions" ).doc( CASE )
+                .collection( TOKEN ).doc( "metadata" )
+                .set({
+                    finished_practice: true,
+                    finished: false,
+                    current: ( PROCESS + 1 ),
+                    order: processes
+                })
+            .then(function() {
+                console.log("Current proccess metadata successfully incremented!");
+            }).catch(function(error) {
+                console.error("Error incrementing current proccess metadata: ", error);
+            });
+        }
     }
-    // if not final process
-    else if ( PROCESS < processes.length-1 ) {
 
-        return db.collection( "submissions" ).doc( CASE )
-            .collection( TOKEN ).doc( "metadata" )
-            .set({
-                finished: false,
-                current: ( PROCESS + 1 ),
-                order: processes
-            })
-        .then(function() {
-            console.log("Current proccess metadata successfully incremented!");
-        }).catch(function(error) {
-            console.error("Error incrementing current proccess metadata: ", error);
-        });
-
-    }
 }
 
 

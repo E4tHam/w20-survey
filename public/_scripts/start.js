@@ -70,7 +70,8 @@ async function handle_SubmitButton() {
     window.location.replace(
         "../survey/?"
         + "token=" + TOKEN
-        + "&process=" + 0
+        + "&process=0"
+        + "&practice"
     );
 }
 
@@ -112,6 +113,7 @@ function store_information() {
 function store_process() {
     return db.collection( "submissions" ).doc( CASE )
         .collection( TOKEN ).doc( "metadata" ).set({
+            finished_practice: false,
             finished: false,
             current: 0,
             order: processes
