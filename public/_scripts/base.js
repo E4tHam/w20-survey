@@ -77,6 +77,8 @@ var frame               = NaN;
 var data_t              = NaN;
 const time              = () => frame/FPS;
 var paused              = true;
+const timeLimit         = 100;
+
 
 const _stepSize         = 5;
 const _maxTicksLimit    = 6;
@@ -267,6 +269,13 @@ function incrementProccess() {
     }
 
 }
+
+function handleOutOfTime() {
+    console.log("[WARNING]: Time is up!");
+    alert(`You have been inactive for ${time()} seconds, so the program will move to the next round`);
+    throw new Stop();
+}
+
 
 
 /* Chart */

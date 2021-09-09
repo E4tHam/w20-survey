@@ -14,9 +14,8 @@ function updateClientData() {
     point = Math.floor( frame/frames_per_point );
 
     // if time is up
-    if ( SERVER_DATA.length <= point ) {
-        console.log("[WARNING]: Time is up!");
-        throw new Stop();
+    if ( time() >= timeLimit || SERVER_DATA.length <= point ) {
+        handleOutOfTime();
     }
 
     // if time is continuing

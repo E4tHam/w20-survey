@@ -8,9 +8,8 @@ function updateClientData() {
     let data_i = Math.round( data_t );
 
     // if time is up
-    if ( SERVER_DATA.length <= data_i ) {
-        console.log("[WARNING]: Time is up!");
-        throw new Stop();
+    if ( time() >= timeLimit || SERVER_DATA.length <= data_i ) {
+        handleOutOfTime();
     }
 
     // push
