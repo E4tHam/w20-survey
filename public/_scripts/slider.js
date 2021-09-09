@@ -15,7 +15,7 @@ function handle_Slider() {
 
     if ( SLIDER_current == SLIDER_recent )
         return;
-    
+
     SLIDER_recent = SLIDER_current;
 
     Actions[ "SliderRecord" ][ frame ] = SLIDER_current;

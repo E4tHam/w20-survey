@@ -13,7 +13,7 @@ function updateClientData() {
         throw new Stop();
     }
 
-    // push 
+    // push
     CLIENT_DATA.push( SERVER_DATA[ data_i ] );
 
     updateCost();
