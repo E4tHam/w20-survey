@@ -13,7 +13,8 @@ var animationFrameRequest   = NaN;
 
 function handle_StartButton() {
     frame = 0;
-    data_t = 0;
+    data_time = 0;
+    data_time_prev = 0;
     paused = false;
 
     StartButton.disabled = true;
@@ -33,7 +34,7 @@ function handle_StartButton() {
 
 async function stop_execution() {
     frame = NaN;
-    data_t = NaN;
+    data_time = NaN;
     paused = true;
 
     cancelAnimationFrame(animationFrameRequest);
@@ -116,7 +117,8 @@ function draw() {
         return;
     }
 
-    data_t += ( hasSlider && DATA_SET == "correlated" ) ? (
+    data_time_prev = data_time;
+    data_time += ( hasSlider && DATA_SET == "correlated" ) ? (
         slider_speed * slider_speed * 15 / FPS
     )       : 15 / FPS;
 

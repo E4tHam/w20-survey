@@ -74,7 +74,8 @@ var chart;
 
 const FPS               = 15;
 var frame               = NaN;
-var data_t              = NaN;
+var data_time           = NaN;
+var data_time_prev      = NaN;
 const time              = () => frame/FPS;
 var paused              = true;
 const timeLimit         = 100;
@@ -349,7 +350,8 @@ function oneDecimalCallback( label ) {
 
 function updateMax() {
     if ( CLIENT_DATA.length != 0 )
-        max = Math.max( max, CLIENT_DATA[ CLIENT_DATA.length - 1 ] );
+        for ( let i = Math.round(data_time_prev); i <= Math.round(data_time); i++ )
+            max = Math.max( max, SERVER_DATA[i] );
 }
 
 
@@ -386,7 +388,7 @@ function updateFinalStats() {
     FinalEarningsSpan.innerHTML = earnings.toFixed(2);
 }
 
-function toggleVisibility( div ){
+function toggleVisibility( div ) {
     if ( div.style.display == "none" ) {
         div.style.display = "block";
     }

@@ -5,10 +5,10 @@ var slider_speed        = 1;
 
 function updateClientData() {
 
-    let data_i = Math.round( data_t );
+    let data_i = Math.round( data_time );
 
     // if time is up
-    if ( time() >= timeLimit || SERVER_DATA.length <= data_i ) {
+    if ( time() >= timeLimit || data_i >= SERVER_DATA.length ) {
         handleOutOfTime();
     }
 
