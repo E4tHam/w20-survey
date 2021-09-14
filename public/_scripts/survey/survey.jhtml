@@ -1,0 +1,42 @@
+
+document.getElementsByTagName("BODY")[0].innerHTML =
+'\
+<h1 class="centered"><span id="Round-Label"></span></h1>\
+<div class="centered" style="display: none">The process stops when your observed value exceeds <span id="IndependentSliderStopCondition"></span>.</div>\
+<div class="centered flex">\
+    <div class="stats">\
+        <div id="CurrentValues" style="display: none">\
+            Current<br>Value:<br><span id="Current__Value"></span>\
+            <br><br>\
+            Current<br>Max:<br><span id="Current__Max"></span>\
+        </div>\
+\
+        <div id="FinalValues" style="display: none">\
+            Final<br>Max:<br><span id="Final__Max"></span>\
+            <br><br>\
+            Final<br>Cost:<br><span id="Final__Cost"></span>\
+            <br><br>\
+            Final<br>Earnings:<br><span id="Final__Earnings"></span>\
+        </div>\
+    </div>\
+    <div id="Chart-Div" class="center"><canvas id="Chart-Canvas"></canvas></div>\
+</div>\
+\
+<div id="ControlsDiv">\
+\
+    <div id="SliderDiv" style="display: none">\
+        Breadth of search: <input type="range" id="Slider" oninput="handle_Slider()" onchange="handle_Slider()" disabled> <br>\
+        Cost per <span id="SliderTimeUnit"></span>: <span id="SliderCost"></span>\
+    </div>\
+\
+    <div>\
+        <button onclick="handle_StartButton()" id="StartButton" disabled>Start</button>\
+        <button onclick="handle_StopButton()" id="StopButton" disabled style="display: none">Stop</button>\
+    </div>\
+    <br>\
+</div>\
+<div id="ContinueDiv" class="centered" style="display: none">\
+    <button onclick="handle_ContinueButton()" id="ContinueButton" disabled>Continue</button>\
+</div>\
+\
+';
