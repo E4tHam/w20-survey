@@ -85,6 +85,14 @@ async function handle_DownloadButton() {
                 .get().then((doc) => {
                     out.information = doc.data();
                 }).catch( ()=>{} );
+            db
+                .collection("submissions")
+                .doc( VERSIONS[version] )
+                .collection( ""+computer )
+                .doc("questions")
+                .get().then((doc) => {
+                    out.questions = doc.data();
+                }).catch( ()=>{} );
 
             for ( let process = 0; process < 30; process++ ) {
                 await db
