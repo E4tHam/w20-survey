@@ -1,0 +1,7 @@
+
+document.getElementsByTagName("BODY")[0].innerHTML =
+'\
+Name: <input type="text" id="NameInput" oninput="handle_NameInput()" disabled> <br>\
+Computer Number: <input type="text" id="TokenInput" oninput="handle_TokenInput()" disabled> <br>\
+<button id="SubmitButton" onclick="handle_SubmitButton()" disabled>Submit</button>\
+';
