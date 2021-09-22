@@ -17,7 +17,7 @@ document.getElementsByTagName("BODY")[0].innerHTML =
         </li>\
     </ul>\
     How many tokens do you want to invest in the risky project? <em>Note that you can pick any number between 0 and 85, including 0 or 85:</em>\
-    <input type="number" id="Q1_input" min="0" max="85" step="1">\
+    <input type="number" id="Q1_input" min="0" max="85" step="1" oninput="handle_Q1_input()">\
 </div>\
 <div id="Q2">\
     <h2>Investment &dash; Task 2</h2>\
@@ -33,7 +33,7 @@ document.getElementsByTagName("BODY")[0].innerHTML =
         </li>\
     </ul>\
     How many tokens do you want to invest in the risky project? <em>Note that you can pick any number between 0 and 90, including 0 or 90:</em>\
-    <input type="number" id="Q2_input" min="0" max="90" step="1">\
+    <input type="number" id="Q2_input" min="0" max="90" step="1" oninput="handle_Q2_input()">\
 </div>\
 \
 <div><button id="SubmitButton" onclick="handle_SubmitButton()" disabled>Submit</button></div>\

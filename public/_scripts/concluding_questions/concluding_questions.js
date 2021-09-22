@@ -12,6 +12,39 @@ const app               = firebase.app();
 const db                = firebase.firestore();
 var processes           = [ "temp" ];
 
+
+var input_status = new Map();
+
+handle_Q1_input();
+function handle_Q1_input() {
+    let status = false;
+    if ( Q1_input.value !== "" ) {
+        let v = parseInt(Q1_input.value);
+        status = ( parseInt(Q1_input.min) <= v && v <= parseInt(Q1_input.max) );
+    }
+    input_status.set("Q1_input", status );
+    update_SubmitButton_status();
+}
+handle_Q2_input();
+function handle_Q2_input() {
+    let status = false;
+    if ( Q2_input.value !== "" ) {
+        let v = parseInt(Q2_input.value);
+        status = ( parseInt(Q2_input.min) <= v && v <= parseInt(Q2_input.max) );
+    }
+    input_status.set("Q2_input", status );
+    update_SubmitButton_status();
+}
+function update_SubmitButton_status() {
+    let to_disable = false;
+    for ( const value of input_status.values() ) {
+        if ( !value )
+        to_disable = true;
+    }
+    SubmitButton.disabled = to_disable;
+}
+
+
 async function handle_SubmitButton() {
     await db.collection( "submissions" ).doc( CASE )
         .collection( TOKEN ).doc( "questions" )
@@ -54,5 +87,5 @@ async function loadData() {
 init();
 async function init() {
     await loadData();
-    SubmitButton.disabled   = false;
+    update_SubmitButton_status();
 }
