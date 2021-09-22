@@ -1,0 +1,41 @@
+
+document.getElementsByTagName("BODY")[0].innerHTML =
+'\
+\
+<div id="Q1">\
+    <h1>Concluding Questions</h1>\
+    <h2>Investment &dash; Task 1</h2>\
+    You have 85 tokens that you can keep or invest in a risky project. The points that you do not invest in the risky project are yours to keep.\
+    <br>\
+    The risky project has a 50% chance of success:\
+    <ul>\
+        <li>\
+            If the project is successful, you will receive 2.5 times the number of tokens you invested.\
+        </li>\
+        <li>\
+            If the project is unsuccessful, you will lose the amount invested.\
+        </li>\
+    </ul>\
+    How many tokens do you want to invest in the risky project? <em>Note that you can pick any number between 0 and 85, including 0 or 85:</em>\
+    <input type="number" id="Q1_input" min="0" max="85" step="1">\
+</div>\
+<div id="Q2">\
+    <h2>Investment &dash; Task 2</h2>\
+    You have 90 tokens that you can keep or invest in a risky project. The tokens that you do not invest in the risky project are yours to keep.\
+    <br>\
+    The risky project has a 40% chance of success:\
+    <ul>\
+        <li>\
+            If the project is successful, you will receive 3 times the number of tokens you invested.\
+        </li>\
+        <li>\
+            If the project is unsuccessful, you will lose the amount invested.\
+        </li>\
+    </ul>\
+    How many tokens do you want to invest in the risky project? <em>Note that you can pick any number between 0 and 90, including 0 or 90:</em>\
+    <input type="number" id="Q2_input" min="0" max="90" step="1">\
+</div>\
+\
+<div><button id="SubmitButton" onclick="handle_SubmitButton()" disabled>Submit</button></div>\
+\
+';

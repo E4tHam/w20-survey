@@ -112,6 +112,10 @@ async function loadData() {
                     window.location.replace(
                         "../../done"
                     );
+                else if ( doc.data().finished_processes == true ) // if finished with processes, go to questions
+                    window.location.replace(
+                        "../concluding_questions/?token=" + TOKEN
+                    );
                 else if (
                     doc.data().current != PROCESS
                     || doc.data().finished_practice === PRACTICE
@@ -163,7 +167,7 @@ async function handle_ContinueButton() {
     } else {
         if ( PROCESS === processes.length-1 ) {
             window.location.replace(
-                "../../done"
+                "../concluding_questions/?token=" + TOKEN
             );
         }
         else if ( PROCESS < processes.length-1 ) {
@@ -208,6 +212,7 @@ function incrementProccess() {
                 .collection( TOKEN ).doc( "metadata" )
                 .set({
                     finished_practice: true,
+                    finished_processes: false,
                     finished: false,
                     current: 0,
                     order: processes
@@ -224,6 +229,7 @@ function incrementProccess() {
                 .collection( TOKEN ).doc( "metadata" )
                 .set({
                     finished_practice: false,
+                    finished_processes: false,
                     finished: false,
                     current: ( PROCESS + 1 ),
                     order: processes
@@ -241,7 +247,8 @@ function incrementProccess() {
                 .collection( TOKEN ).doc( "metadata" )
                 .set({
                     finished_practice: true,
-                    finished: true,
+                    finished_processes: true,
+                    finished: false,
                     order: processes
                 })
             .then(function() {
@@ -256,6 +263,7 @@ function incrementProccess() {
                 .collection( TOKEN ).doc( "metadata" )
                 .set({
                     finished_practice: true,
+                    finished_processes: false,
                     finished: false,
                     current: ( PROCESS + 1 ),
                     order: processes

@@ -1,0 +1,37 @@
+
+/* style.css */
+
+
+
+/* Page Defaults */
+html,
+body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 1em;
+    font-size: 20px;
+}
+
+/* Other */
+.centered {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+h2 {
+    font-weight: 100;
+    font-size: 1.5rem;
+}
+
+button {
+    cursor: pointer;
+}
+button:disabled {
+    opacity: .6;
+    cursor: initial;
+}
+
+div {
+    margin-bottom: 1em;
+}

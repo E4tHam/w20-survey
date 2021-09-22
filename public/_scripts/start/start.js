@@ -148,6 +148,7 @@ function store_process() {
     return db.collection( "submissions" ).doc( CASE )
         .collection( TOKEN ).doc( "metadata" ).set({
             finished_practice: false,
+            finished_processes: false,
             finished: false,
             current: 0,
             order: processes
