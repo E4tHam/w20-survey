@@ -151,7 +151,8 @@ function store_process() {
             finished_processes: false,
             finished: false,
             current: 0,
-            order: processes
+            order: processes,
+            total_earnings: 0
         })
     .then(function() {
         console.log("Process number successfully written!");

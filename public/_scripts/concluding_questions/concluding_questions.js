@@ -11,6 +11,7 @@ const SubmitButton      = document.getElementById("SubmitButton");
 const app               = firebase.app();
 const db                = firebase.firestore();
 var processes           = [ "temp" ];
+var earnings            = 0;
 
 
 var input_status = new Map();
@@ -58,7 +59,8 @@ async function handle_SubmitButton() {
             finished_practice: true,
             finished_processes: true,
             finished: true,
-            order: processes
+            order: processes,
+            total_earnings: earnings
         });
     window.location.replace(
         "../../done/"
@@ -79,8 +81,8 @@ async function loadData() {
                         "../survey/?token=" + TOKEN
                     );
 
-                // load order
                 processes = doc.data().order;
+                earnings = doc.data().total_earnings;
             });
 }
 

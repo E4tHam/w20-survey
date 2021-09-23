@@ -54,6 +54,7 @@ const practices =
     (DATA_SET=="independent") ? ["practice_01","practice_01","practice_01","practice_02","practice_02","practice_02","practice_03","practice_03","practice_03"] :
     (DATA_SET=="correlated")  ? ["practice_v01","practice_v01","practice_v01","practice_v02","practice_v02","practice_v02","practice_v03","practice_v03","practice_v03"] :
     ["error"];
+var past_earnings       = 0;
 
 
 // load firebase data
@@ -128,6 +129,8 @@ async function loadData() {
 
                 // load order
                 processes = doc.data().order;
+                // total earnings
+                past_earnings = doc.data().total_earnings;
         })
     ;
 
@@ -215,7 +218,8 @@ function incrementProccess() {
                     finished_processes: false,
                     finished: false,
                     current: 0,
-                    order: processes
+                    order: processes,
+                    total_earnings: 0
                 })
             .then(function() {
                 console.log("Process data updated.");
@@ -232,7 +236,8 @@ function incrementProccess() {
                     finished_processes: false,
                     finished: false,
                     current: ( PROCESS + 1 ),
-                    order: processes
+                    order: processes,
+                    total_earnings: 0
                 })
             .then(function() {
                 console.log("Current proccess metadata successfully incremented!");
@@ -249,7 +254,8 @@ function incrementProccess() {
                     finished_practice: true,
                     finished_processes: true,
                     finished: false,
-                    order: processes
+                    order: processes,
+                    total_earnings: past_earnings+earnings
                 })
             .then(function() {
                 console.log("Process data updated.");
@@ -266,7 +272,8 @@ function incrementProccess() {
                     finished_processes: false,
                     finished: false,
                     current: ( PROCESS + 1 ),
-                    order: processes
+                    order: processes,
+                    total_earnings: past_earnings+earnings
                 })
             .then(function() {
                 console.log("Current proccess metadata successfully incremented!");
