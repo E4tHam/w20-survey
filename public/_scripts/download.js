@@ -1,6 +1,7 @@
 
 const DownloadButton = document.getElementById("DownloadButton");
 const NumComputers = document.getElementById("NumComputers");
+const EarningsView = document.getElementById("EarningsView");
 
 const app               = firebase.app();
 const db                = firebase.firestore();
@@ -69,7 +70,7 @@ async function handle_DownloadButton() {
             let out = new Object();
             out.data = [];
 
-            db
+            await db
                 .collection("submissions")
                 .doc( VERSIONS[version] )
                 .collection( ""+computer )
@@ -77,7 +78,7 @@ async function handle_DownloadButton() {
                 .get().then((doc) => {
                     out.metadata = doc.data();
                 }).catch( ()=>{} );
-            db
+            await db
                 .collection("submissions")
                 .doc( VERSIONS[version] )
                 .collection( ""+computer )
@@ -85,7 +86,7 @@ async function handle_DownloadButton() {
                 .get().then((doc) => {
                     out.information = doc.data();
                 }).catch( ()=>{} );
-            db
+            await db
                 .collection("submissions")
                 .doc( VERSIONS[version] )
                 .collection( ""+computer )
@@ -93,6 +94,9 @@ async function handle_DownloadButton() {
                 .get().then((doc) => {
                     out.questions = doc.data();
                 }).catch( ()=>{} );
+
+            // earnings[out.information.name] = out.metadata.total_earnings;
+            EarningsView.innerHTML += `${out.information.name} : $${out.metadata.total_earnings} <br>`;
 
             for ( let process = 0; process < 30; process++ ) {
                 await db
@@ -120,7 +124,6 @@ async function handle_DownloadButton() {
     a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(json,null,2));
     a.download = 'data.json';
     a.click();
-
 
     console.log("DOWNLOAD: DONE");
 }
