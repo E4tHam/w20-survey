@@ -51,8 +51,8 @@ const db                = firebase.firestore();
 var processes           = [ "temp" ];
 var SERVER_DATA         = [ 0 ];
 const practices =
-    (DATA_SET=="independent") ? ["practice_01","practice_01","practice_01","practice_02","practice_02","practice_02","practice_03","practice_03","practice_03"] :
-    (DATA_SET=="correlated")  ? ["practice_v01","practice_v01","practice_v01","practice_v02","practice_v02","practice_v02","practice_v03","practice_v03","practice_v03"] :
+    (DATA_SET=="independent") ? ["p01","p01","p01","p02","p02","p02","p03","p03","p03"] :
+    (DATA_SET=="correlated")  ? ["p01","p01","p01","p02","p02","p02","p03","p03","p03"] :
     ["error"];
 var past_earnings       = 0;
 
