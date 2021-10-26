@@ -1,7 +1,11 @@
 
 document.getElementsByTagName("BODY")[0].innerHTML =
 '\
+<div id="Start">\
+<h1>Experiment</h1>\
 Name: <input type="text" id="NameInput" oninput="handle_NameInput()" disabled> <br>\
-Computer Number: <input type="text" id="TokenInput" oninput="handle_TokenInput()" disabled> <br>\
+Session Id: <input type="text" id="SessionIdInput" oninput="handle_SessionIdInput()" disabled> <br>\
+Computer Number: <input type="text" id="ComputerNumberInput" oninput="handle_ComputerNumberInput()" disabled> <br>\
 <button id="SubmitButton" onclick="handle_SubmitButton()" disabled>Submit</button>\
+</div>\
 ';

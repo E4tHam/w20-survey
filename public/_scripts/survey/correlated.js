@@ -1,7 +1,7 @@
 
 /* correlated.js */
 
-var slider_speed        = 1;
+var slider_speed        = 4;
 
 function updateClientData() {
 
@@ -11,6 +11,9 @@ function updateClientData() {
     if ( time() >= timeLimit || data_i >= SERVER_DATA.length ) {
         handleOutOfTime();
     }
+    if ((time()>3)&&( current_earnings() < earnings_floor )) {
+        handleLowEarnings();
+    }
 
     // push
     CLIENT_DATA.push( SERVER_DATA[ data_i ] );
@@ -19,10 +22,19 @@ function updateClientData() {
 
 }
 
+function handleLowEarnings() {
+    console.log("[WARNING]: Earnings are too low!");
+    alert(`You have reached a negative profit of $${Math.abs(earnings_floor).toFixed(2)}, so the program will move to the next round.`);
+    throw new Stop();
+}
+
 // For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b*s
 // where a and b are constants.
+function costOf(slider_value) {
+    return 0.06 * Math.exp(0.5 * slider_value);
+}
 function updateCost() {
-    cost += ( b * slider_speed - a ) / FPS;
+    cost += costOf(slider_speed) / FPS;
 }
 
 

@@ -3,8 +3,14 @@
 
 
 hasSlider                   = true;
-const SliderMin             = 1.2;
-const SliderMax             = 2.4;
+const SliderMin             =
+      (DATA_SET=="independent") ? 3
+    : (DATA_SET=="correlated")  ? 1
+    : NaN;
+const SliderMax             =
+      (DATA_SET=="independent") ? 8
+    : (DATA_SET=="correlated")  ? 5
+    : NaN;
 const SLiderStart           = SliderMin;
 const SliderStep            = 0.01;
 const SliderDiv             = document.getElementById("SliderDiv");
@@ -23,7 +29,7 @@ Slider.max                  = SliderMax;
 Slider.value                = SLiderStart;
 Slider.step                 = SliderStep;
 
-SliderCost.innerHTML        = ( b * SLiderStart - a ).toFixed(2);
+SliderCost.innerHTML        = costOf(SLiderStart).toFixed(2);
 
 
 Actions[ "SliderRecord" ]   = new Object();
@@ -33,7 +39,7 @@ let SLIDER_recent           = NaN;
 function handle_Slider() {
 
     let SLIDER_current = parseFloat( Slider.value );
-    SliderCost.innerHTML = ( b * SLIDER_current - a ).toFixed(2);
+    SliderCost.innerHTML = costOf(SLIDER_current).toFixed(2);
 
 
     if ( SLIDER_current == SLIDER_recent )

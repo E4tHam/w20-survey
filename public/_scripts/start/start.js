@@ -2,22 +2,27 @@
 /* start.js */
 
 
-const app           = firebase.app();
-const db            = firebase.firestore();
+const app                   = firebase.app();
+const db                    = firebase.firestore();
 
-const SubmitButton  = document.getElementById( "SubmitButton" );
-const NameInput     = document.getElementById( "NameInput" );
-const TokenInput    = document.getElementById( "TokenInput" );
+const SubmitButton          = document.getElementById( "SubmitButton" );
+const NameInput             = document.getElementById( "NameInput" );
+const SessionIdInput    = document.getElementById( "SessionIdInput" );
+const ComputerNumberInput    = document.getElementById( "ComputerNumberInput" );
 
-const CASE          = document.currentScript.getAttribute("case");
-var TOKEN           = NaN;
+const CASE                  = document.currentScript.getAttribute("case");
+var NAME                    = "";
+var SESSIONID               = "";
+var COMPUTERNUMBER          = "";
+var TOKEN                   = NaN;
 
-const DATA_SET      = ( CASE.indexOf( "Independent" ) !== -1 ) ? "independent"
-                    : ( CASE.indexOf( "Correlated"  ) !== -1 ) ? "correlated"
-                    : "UNKNOWN";
+const DATA_SET              = ( CASE.indexOf( "Independent" ) !== -1 ) ? "independent"
+                            : ( CASE.indexOf( "Correlated"  ) !== -1 ) ? "correlated"
+                            : "UNKNOWN";
 
 
-var processes       = [ "temp" ];
+var processes               = [ "temp" ];
+
 db.collection( "onload_data" ).doc( DATA_SET )
         .collection( "processes" ).doc( "document_ids" )
     .get()
@@ -28,8 +33,10 @@ db.collection( "onload_data" ).doc( DATA_SET )
             alert( "Please try again later." );
         })
 ;
+
 NameInput.disabled = false;
-TokenInput.disabled = false;
+SessionIdInput.disabled = false;
+ComputerNumberInput.disabled = false;
 
 
 
@@ -40,14 +47,31 @@ var input_status = new Map();
 
 handle_NameInput();
 function handle_NameInput() {
-    input_status.set("SubmitButton", ( NameInput.value !== "" ) );
+    let status = ( NameInput.value !== "" );
+    if (status) NAME = NameInput.value;
+    else NAME = null;
+    input_status.set("SubmitButton", status );
     update_SubmitButton_status();
 }
-handle_TokenInput();
-function handle_TokenInput() {
-    input_status.set("TokenInput", ( TokenInput.value !== "" ));
+handle_SessionIdInput();
+function handle_SessionIdInput() {
+    let status = SessionIdInput.value.length > 0 && SessionIdInput.value.match("^[a-zA-Z0-9]+$");
+    if (status) SESSIONID = SessionIdInput.value.toUpperCase();
+    else SESSIONID = null;
+    input_status.set("SessionIdInput", status);
     update_SubmitButton_status();
 }
+handle_ComputerNumberInput();
+function handle_ComputerNumberInput() {
+    let computer_number = parseInt(ComputerNumberInput.value);
+    if (computer_number < 0 || computer_number > 30) computer_number = NaN;
+    let status = (ComputerNumberInput.value == (""+computer_number));
+    if (status) COMPUTERNUMBER = ComputerNumberInput.value;
+    else COMPUTERNUMBER = null;
+    input_status.set("ComputerNumberInput", status );
+    update_SubmitButton_status();
+}
+
 function update_SubmitButton_status() {
     let to_disable = false;
     for ( const value of input_status.values() ) {
@@ -59,19 +83,12 @@ function update_SubmitButton_status() {
 
 async function handle_SubmitButton() {
     NameInput.disabled = true;
-    TokenInput.disabled = true;
+    SessionIdInput.disabled = true;
+    ComputerNumberInput.disabled = true;
     SubmitButton.disabled = true;
 
     // calculate token
-    TOKEN = return_token();
-
-    if ( !token_valid() ) {
-        alert("Error: token not valid.");
-        NameInput.disabled = false;
-        TokenInput.disabled = false;
-        update_SubmitButton_status();
-        return;
-    }
+    TOKEN = SESSIONID + "_" + COMPUTERNUMBER;
 
     // if token already exists in firebase
     await db.collection( "submissions" ).doc( CASE )
@@ -117,24 +134,15 @@ function assign_process_order() {
 }
 
 
-function return_token() {
-    return TokenInput.value;
-}
-
-function token_valid() {
-    let temp = 0;
-    try {temp = parseInt(TOKEN);}
-    catch (error) {return false;}
-
-    return ( 1 <= temp && temp <= 100 );
-}
-
 function store_information() {
     let date = new Date();
     return db.collection( "submissions" ).doc( CASE )
         .collection( TOKEN ).doc( "information" ).set({
-            name: NameInput.value,
-            date: date.toUTCString()
+            name: NAME,
+            session: SESSIONID,
+            computer: COMPUTERNUMBER,
+            date: date.toUTCString(),
+            token: TOKEN
         })
     .then(function() {
         console.log("Submission successfully written!");

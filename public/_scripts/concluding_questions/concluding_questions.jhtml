@@ -2,7 +2,7 @@
 document.getElementsByTagName("BODY")[0].innerHTML =
 '\
 \
-<div id="Q1">\
+<div id="Q1" style="display:none">\
     <h1>Concluding Questions</h1>\
     <h2>Investment &dash; Task 1</h2>\
     You have 85 tokens that you can keep or invest in a risky project. The points that you do not invest in the risky project are yours to keep.\
@@ -18,8 +18,9 @@ document.getElementsByTagName("BODY")[0].innerHTML =
     </ul>\
     How many tokens do you want to invest in the risky project? <em>Note that you can pick any number between 0 and 85, including 0 or 85:</em>\
     <input type="number" id="Q1_input" min="0" max="85" step="1" oninput="handle_Q1_input()">\
+    <div><button id="SubmitButton1" onclick="handle_SubmitButton1()" disabled>Submit</button></div>\
 </div>\
-<div id="Q2">\
+<div id="Q2" style="display:none">\
     <h2>Investment &dash; Task 2</h2>\
     You have 90 tokens that you can keep or invest in a risky project. The tokens that you do not invest in the risky project are yours to keep.\
     <br>\
@@ -34,8 +35,8 @@ document.getElementsByTagName("BODY")[0].innerHTML =
     </ul>\
     How many tokens do you want to invest in the risky project? <em>Note that you can pick any number between 0 and 90, including 0 or 90:</em>\
     <input type="number" id="Q2_input" min="0" max="90" step="1" oninput="handle_Q2_input()">\
+    <div><button id="SubmitButton2" onclick="handle_SubmitButton2()" disabled>Submit</button></div>\
 </div>\
 \
-<div><button id="SubmitButton" onclick="handle_SubmitButton()" disabled>Submit</button></div>\
 \
 ';

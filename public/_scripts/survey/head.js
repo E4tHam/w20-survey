@@ -17,6 +17,9 @@ function handle_StartButton() {
     data_time_prev = 0;
     paused = false;
 
+    // reset client data
+    CLIENT_DATA = [];
+
     StartButton.disabled = true;
 
     if ( hasSlider ) {
@@ -33,6 +36,7 @@ function handle_StartButton() {
 }
 
 async function stop_execution() {
+    Actions[ "StopTime" ] = time();
     frame = NaN;
     data_time = NaN;
     paused = true;
@@ -49,14 +53,11 @@ async function stop_execution() {
 
     toggleVisibility( CurrentValuesDiv );
 
-    updateEarnings();
     updateFinalStats();
     toggleVisibility( FinalValuesDiv );
 
-    if ( !PRACTICE ) {
-        // save the actions and CLIENT_DATA
-        await storeProccessData();
-    }
+    // save the actions and CLIENT_DATA
+    await storeProccessData();
 
     // save the next proccess
     await incrementProccess();

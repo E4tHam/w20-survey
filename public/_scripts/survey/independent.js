@@ -4,25 +4,24 @@
 
 const seconds_per_point = 3;
 const frames_per_point  = FPS*seconds_per_point;
+const point = () => Math.floor( frame / frames_per_point );
 
-let point               = 0;
+var slider_scalar       = 6.17;
 
-var slider_scalar       = 1;
+var max_point = 30;
 
 function updateClientData() {
 
-    point = Math.floor( frame/frames_per_point );
-
     // if time is up
-    if ( time() >= timeLimit || SERVER_DATA.length <= point ) {
-        handleOutOfTime();
+    if ( point() >= max_point || SERVER_DATA.length <= point() ) {
+        handleOutOfPoints();
     }
 
     // if time is continuing
     else if ( frame % frames_per_point === 0 ) {
         // slider logic
         CLIENT_DATA.push(
-            slider_scalar * SERVER_DATA[ point ]
+            slider_scalar * SERVER_DATA[ point() ]
         );
     }
 
@@ -30,11 +29,20 @@ function updateClientData() {
 
 }
 
+function handleOutOfPoints() {
+    console.log("[WARNING]: Out of Points!");
+    alert(`You have drawn the maximum of ${(point())} points, so the program will move to the next round.`);
+    throw new Stop();
+}
+
+function costOf(slider_value) {
+    return 0.02 * Math.exp(0.5 * slider_value);
+}
 // For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b s
 // where a and b are constants.
 function updateCost() {
-    let temp_scalar = CLIENT_DATA[ CLIENT_DATA.length - 1 ] / SERVER_DATA[ point ];
-    cost += ( b * temp_scalar - a ) / FPS;
+    let set_scalar = CLIENT_DATA[ CLIENT_DATA.length - 1 ] / SERVER_DATA[ point() ];
+    cost += costOf(set_scalar) / FPS;
 }
 
 function updateChart() {

@@ -35,3 +35,15 @@ button:disabled {
 div {
     margin-bottom: 1em;
 }
+
+#Start {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 50ch;
+    margin: auto;
+}
+
+#Start button {
+    width: fit-content;
+}

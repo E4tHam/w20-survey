@@ -1,6 +1,6 @@
 
 const DownloadButton = document.getElementById("DownloadButton");
-const NumComputers = document.getElementById("NumComputers");
+const SessionIdInput = document.getElementById("SessionIdInput");
 const EarningsView = document.getElementById("EarningsView");
 
 const app               = firebase.app();
@@ -17,11 +17,12 @@ const VERSIONS = [
 
 var input_status = new Map();
 
-NumComputers.disabled = false;
+SessionIdInput.disabled = false;
 
-handle_NumComputers();
-function handle_NumComputers() {
-    input_status.set("SubmitButton", ( NumComputers.value !== "" ) );
+handle_SessionIdInput();
+function handle_SessionIdInput() {
+    let status = SessionIdInput.value.length > 0 && SessionIdInput.value.match("^[a-zA-Z0-9]+$");
+    input_status.set("SessionIdInput", status);
     update_DownloadButton_status();
 }
 function update_DownloadButton_status() {
@@ -37,12 +38,7 @@ async function handle_DownloadButton() {
     console.log("DOWNLOAD: START");
     DownloadButton.disabled = true;
 
-    if ( !number_valid(NumComputers.value) ) {
-        alert("Invalid number given.");
-        update_DownloadButton_status();
-        return;
-    }
-    let num_computers = parseInt(NumComputers.value);
+    let num_computers = 30;
 
     let json = new Object();
 
@@ -51,12 +47,13 @@ async function handle_DownloadButton() {
         let version_json = [];
 
         for ( let computer = 1; computer <= num_computers; computer++ ) {
-            console.log( "trying " + VERSIONS[version] + " " + computer );
+            let TOKEN = `${SessionIdInput.value.toUpperCase()}_${computer}`;
+            console.log( "trying " + VERSIONS[version] + " " + TOKEN );
             let finished = false;
             await db
                 .collection("submissions")
                 .doc( VERSIONS[version] )
-                .collection( ""+computer )
+                .collection( TOKEN )
                 .doc("metadata")
                 .get().then((doc) => {
                     if ( doc.data().finished ) {
@@ -68,12 +65,15 @@ async function handle_DownloadButton() {
             console.log(`Downloading data from computer ${computer}.`);
 
             let out = new Object();
-            out.data = [];
+            out.processes = {
+                "practice": [],
+                "processes": []
+            };
 
             await db
                 .collection("submissions")
                 .doc( VERSIONS[version] )
-                .collection( ""+computer )
+                .collection( TOKEN )
                 .doc("metadata")
                 .get().then((doc) => {
                     out.metadata = doc.data();
@@ -81,7 +81,7 @@ async function handle_DownloadButton() {
             await db
                 .collection("submissions")
                 .doc( VERSIONS[version] )
-                .collection( ""+computer )
+                .collection( TOKEN )
                 .doc("information")
                 .get().then((doc) => {
                     out.information = doc.data();
@@ -89,23 +89,34 @@ async function handle_DownloadButton() {
             await db
                 .collection("submissions")
                 .doc( VERSIONS[version] )
-                .collection( ""+computer )
+                .collection( TOKEN )
                 .doc("questions")
                 .get().then((doc) => {
                     out.questions = doc.data();
                 }).catch( ()=>{} );
 
-            // earnings[out.information.name] = out.metadata.total_earnings;
-            EarningsView.innerHTML += `${out.information.name} : $${out.metadata.total_earnings} <br>`;
 
+            EarningsView.innerHTML += `${TOKEN} : $${Math.max(0,out.metadata.total_earnings.toFixed(2))} <br>`;
+
+            // practice
+            for ( let process = 0; process < 9; process++ ) {
+                await db
+                    .collection("submissions").doc( VERSIONS[version] )
+                    .collection( TOKEN ).doc( "processes" )
+                    .collection( "practice" ).doc( ((process<=9)?"0":"") + process )
+                    .get().then((doc) => {
+                        out.processes.practice.push( doc.data() );
+                    }).catch( ()=>{} );
+            }
+            // actual
             for ( let process = 0; process < 30; process++ ) {
                 await db
                     .collection("submissions")
                     .doc( VERSIONS[version] )
-                    .collection( ""+computer )
-                    .doc(""+process)
+                    .collection( TOKEN ).doc( "processes" )
+                    .collection( "processes" ).doc( ((process<=9)?"0":"") + process )
                     .get().then((doc) => {
-                        out.data.push( doc.data() );
+                        out.processes.processes.push( doc.data() );
                     }).catch( ()=>{} );
             }
 
@@ -126,12 +137,4 @@ async function handle_DownloadButton() {
     a.click();
 
     console.log("DOWNLOAD: DONE");
-}
-
-function number_valid(num) {
-    let temp = 0;
-    try {temp = parseInt(num);}
-    catch (error) {return false;}
-
-    return ( 1 <= temp && temp <= 100 );
 }

@@ -1,15 +1,15 @@
 
 /* base.js */
 
+
 // constants
 const clamp = ( min, T, max ) => Math.max( min, Math.min( T, max ) );
 const goldenratio       = 0.61803;
 
-// cost function
-const a                 = 0.2;
-const b                 = 0.2;
 
 // page data
+const BODY              = document.getElementsByTagName("body")[0];
+BODY.style = "display:none"; // body is hidden until data is loaded and password is entered
 const urlParams         = new URLSearchParams( window.location.search );
 const CASE              = document.currentScript.getAttribute("case");
 const TOKEN             = urlParams.get("token");
@@ -25,7 +25,6 @@ const DATA_SET          = ( CASE.indexOf( "Independent" ) !== -1 ) ? "independen
 
 var hasSlider           = false;
 var hasStopButton       = false;
-
 
 // page elements
 const StartButton       = document.getElementById("StartButton");
@@ -55,6 +54,7 @@ const practices =
     (DATA_SET=="correlated")  ? ["p01","p01","p01","p02","p02","p02","p03","p03","p03"] :
     ["error"];
 var past_earnings       = 0;
+const PROCESS_ID        = () => PRACTICE?practices[PROCESS]:processes[PROCESS];
 
 
 // load firebase data
@@ -89,7 +89,10 @@ const _timeWidth        = _stepSize * _maxTicksLimit;
 // test
 var max                 = Number.NEGATIVE_INFINITY;
 var cost                = 0;
-var earnings            = NaN;
+var earnings_floor      = -7.5;
+const current_earnings  = () => max - cost;
+const total_earnings    = () => current_earnings() + past_earnings;
+const average_earnings    = () => total_earnings() / (PROCESS+1);
 class Stop { };
 
 
@@ -99,6 +102,14 @@ function handle_noToken() {
     window.location.replace(
         "../start/"
     );
+}
+
+function requestPassword(password_index) {
+    passwords = ["0","1","2","3","4","5","6","7","8","9","10"];
+    let entered_passowrd = null;
+    while (entered_passowrd != passwords[password_index]) {
+        entered_passowrd = prompt("Please wait for the password to be given before continuing with the experiment.");
+    }
 }
 
 
@@ -134,15 +145,24 @@ async function loadData() {
         })
     ;
 
-    // console.log( `Retrieving process number ${PROCESS}: ${processes[PROCESS]}.` );
+    // console.log( `Retrieving process number ${PROCESS}: ${PROCESS_ID()}.` );
     await db.collection( "onload_data" ).doc( DATA_SET )
-        .collection( PRACTICE?"practice":"processes" ).doc( PRACTICE?practices[PROCESS]:processes[PROCESS] )
+        .collection( PRACTICE?"practice":"processes" ).doc( PROCESS_ID() )
         .get()
         .then( doc => {
             SERVER_DATA = doc.data().data;
             StartButton.disabled = false;
         })
     ;
+
+    // enter password
+    if (PRACTICE == true && PROCESS == 0)
+        requestPassword(Math.floor(0));
+    if (PRACTICE == false && (PROCESS % 5) == 0)
+        requestPassword(1+Math.floor(PROCESS/5));
+
+    // show page
+    BODY.style = "";
 }
 
 
@@ -185,15 +205,16 @@ async function handle_ContinueButton() {
 function storeProccessData() {
 
     return db.collection( "submissions" ).doc( CASE )
-    .collection( TOKEN ).doc( ""+PROCESS )
+    .collection( TOKEN ).doc( "processes" )
+    .collection( (PRACTICE?"practice":"processes") ).doc( ((PROCESS<=9)?"0":"") + PROCESS )
     .set(
         Object.assign(
             Actions,
             {
                 max: max,
                 cost: cost,
-                earnings: earnings,
-                process_id: processes[PROCESS],
+                earnings: current_earnings(),
+                process_id: PROCESS_ID(),
                 data: CLIENT_DATA
             }
         )
@@ -219,7 +240,6 @@ function incrementProccess() {
                     finished: false,
                     current: 0,
                     order: processes,
-                    total_earnings: 0
                 })
             .then(function() {
                 console.log("Process data updated.");
@@ -237,7 +257,6 @@ function incrementProccess() {
                     finished: false,
                     current: ( PROCESS + 1 ),
                     order: processes,
-                    total_earnings: 0
                 })
             .then(function() {
                 console.log("Current proccess metadata successfully incremented!");
@@ -255,7 +274,8 @@ function incrementProccess() {
                     finished_processes: true,
                     finished: false,
                     order: processes,
-                    total_earnings: past_earnings+earnings
+                    total_earnings: total_earnings(),
+                    average_earnings: average_earnings()
                 })
             .then(function() {
                 console.log("Process data updated.");
@@ -273,7 +293,8 @@ function incrementProccess() {
                     finished: false,
                     current: ( PROCESS + 1 ),
                     order: processes,
-                    total_earnings: past_earnings+earnings
+                    total_earnings: total_earnings(),
+                    average_earnings: average_earnings()
                 })
             .then(function() {
                 console.log("Current proccess metadata successfully incremented!");
@@ -287,7 +308,7 @@ function incrementProccess() {
 
 function handleOutOfTime() {
     console.log("[WARNING]: Time is up!");
-    alert(`You have been inactive for ${time()} seconds, so the program will move to the next round`);
+    alert(`You have exceeded ${timeLimit.toFixed(0)} seconds, so the program will move to the next round.`);
     throw new Stop();
 }
 
@@ -391,10 +412,6 @@ function updateMaxLineValue() {
 
 // Cost and Earnings
 
-function updateEarnings() {
-    earnings = max - cost;
-}
-
 function updateCurrentStats() {
     CurrentValueSpan.innerHTML = CLIENT_DATA[ CLIENT_DATA.length - 1 ].toFixed(2);
     CurrentMaxSpan.innerHTML = max.toFixed(2);
@@ -403,7 +420,7 @@ function updateCurrentStats() {
 function updateFinalStats() {
     FinalMaxSpan.innerHTML      = max.toFixed(2);
     FinalCostSpan.innerHTML     = cost.toFixed(2);
-    FinalEarningsSpan.innerHTML = earnings.toFixed(2);
+    FinalEarningsSpan.innerHTML = current_earnings().toFixed(2);
 }
 
 function toggleVisibility( div ) {

@@ -3,50 +3,48 @@ const urlParams         = new URLSearchParams( window.location.search );
 const CASE              = document.currentScript.getAttribute("case");
 const TOKEN             = urlParams.get("token");
 
+const Q1                = document.getElementById("Q1");
+const Q2                = document.getElementById("Q2");
 const Q1_input          = document.getElementById("Q1_input");
 const Q2_input          = document.getElementById("Q2_input");
-const SubmitButton      = document.getElementById("SubmitButton");
+const SubmitButton1     = document.getElementById("SubmitButton1");
+const SubmitButton2     = document.getElementById("SubmitButton2");
 
 // firebase
 const app               = firebase.app();
 const db                = firebase.firestore();
-var processes           = [ "temp" ];
-var earnings            = 0;
-
-
-var input_status = new Map();
+var processes           = [ "" ];
+var total_earnings      = NaN;
 
 handle_Q1_input();
 function handle_Q1_input() {
-    let status = false;
+    let to_disable = true;
     if ( Q1_input.value !== "" ) {
         let v = parseInt(Q1_input.value);
-        status = ( parseInt(Q1_input.min) <= v && v <= parseInt(Q1_input.max) );
+        to_disable = !( parseInt(Q1_input.min) <= v && v <= parseInt(Q1_input.max) );
     }
-    input_status.set("Q1_input", status );
-    update_SubmitButton_status();
+    SubmitButton1.disabled = to_disable;
 }
+
+function handle_SubmitButton1() {
+    Q1_input.disabled = true;
+    SubmitButton1.disabled = true;
+    Q2.style = "";
+}
+
 handle_Q2_input();
 function handle_Q2_input() {
-    let status = false;
+    let to_disable = true;
     if ( Q2_input.value !== "" ) {
         let v = parseInt(Q2_input.value);
-        status = ( parseInt(Q2_input.min) <= v && v <= parseInt(Q2_input.max) );
+        to_disable = !( parseInt(Q2_input.min) <= v && v <= parseInt(Q2_input.max) );
     }
-    input_status.set("Q2_input", status );
-    update_SubmitButton_status();
-}
-function update_SubmitButton_status() {
-    let to_disable = false;
-    for ( const value of input_status.values() ) {
-        if ( !value )
-        to_disable = true;
-    }
-    SubmitButton.disabled = to_disable;
+    SubmitButton2.disabled = to_disable;
 }
 
-
-async function handle_SubmitButton() {
+async function handle_SubmitButton2() {
+    Q2_input.disabled = true;
+    SubmitButton2.disabled = true;
     await db.collection( "submissions" ).doc( CASE )
         .collection( TOKEN ).doc( "questions" )
         .set({
@@ -60,7 +58,7 @@ async function handle_SubmitButton() {
             finished_processes: true,
             finished: true,
             order: processes,
-            total_earnings: earnings
+            total_earnings: total_earnings
         });
     window.location.replace(
         "../../done/"
@@ -82,12 +80,12 @@ async function loadData() {
                     );
 
                 processes = doc.data().order;
-                earnings = doc.data().total_earnings;
+                total_earnings = doc.data().total_earnings;
             });
 }
 
 init();
 async function init() {
     await loadData();
-    update_SubmitButton_status();
+    Q1.style = "";
 }
