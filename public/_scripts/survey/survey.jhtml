@@ -25,8 +25,10 @@ document.getElementsByTagName("BODY")[0].innerHTML =
 <div id="ControlsDiv">\
 \
     <div id="SliderDiv" style="display: none">\
-        Breadth of search: <input type="range" id="Slider" oninput="handle_Slider()" onchange="handle_Slider()" disabled> <br>\
-        Cost per <span id="SliderTimeUnit"></span>: <span id="SliderCost"></span>\
+        Breadth of search: <span id="SliderBreadth"></span> <br>\
+        <input type="range" id="BreadthSlider" oninput="handle_BreadthSlider()" onchange="handle_BreadthSlider()" disabled> <br>\
+        Cost per <span id="SliderTimeUnit"></span>: <span id="SliderCost"></span> <br>\
+        <input type="range" id="CostSlider" oninput="handle_CostSlider()" onchange="handle_CostSlider()" disabled></span>\
     </div>\
 \
     <div>\

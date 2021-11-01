@@ -28,10 +28,12 @@ function handleLowEarnings() {
     throw new Stop();
 }
 
-// For every second that the slider is at some value s, the subject pays a cost of c(s) = -a + b*s
-// where a and b are constants.
+
 function costOf(slider_value) {
     return 0.06 * Math.exp(0.5 * slider_value);
+}
+function breadthOf(cost_value) {
+    return Math.log(cost_value / 0.06) / 0.5;
 }
 function updateCost() {
     cost += costOf(slider_speed) / FPS;

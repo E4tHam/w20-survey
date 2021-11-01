@@ -1,4 +1,4 @@
-input[type=range]#Slider {
+input[type=range] {
     width             : 100%;
     margin            : 5.8px 0;
     background-color  : transparent;
@@ -6,11 +6,11 @@ input[type=range]#Slider {
     opacity: 50%;
 }
 
-input[type=range]#Slider:focus {
+input[type=range]:focus {
     outline: none;
 }
 
-input[type=range]#Slider::-webkit-slider-runnable-track {
+input[type=range]::-webkit-slider-runnable-track {
     background: #646464;
     border    : 0;
     width     : 100%;
@@ -18,7 +18,7 @@ input[type=range]#Slider::-webkit-slider-runnable-track {
     cursor    : pointer;
 }
 
-input[type=range]#Slider::-webkit-slider-thumb {
+input[type=range]::-webkit-slider-thumb {
     margin-top        : -5.8px;
     width             : 20px;
     height            : 20px;
@@ -30,11 +30,11 @@ input[type=range]#Slider::-webkit-slider-thumb {
     -webkit-appearance: none;
 }
 
-input[type=range]#Slider:focus::-webkit-slider-runnable-track {
+input[type=range]:focus::-webkit-slider-runnable-track {
     background: #b3b3b3;
 }
 
-input[type=range]#Slider::-moz-range-track {
+input[type=range]::-moz-range-track {
     background: #646464;
     border    : 0;
     width     : 100%;
@@ -42,7 +42,7 @@ input[type=range]#Slider::-moz-range-track {
     cursor    : pointer;
 }
 
-input[type=range]#Slider::-moz-range-thumb {
+input[type=range]::-moz-range-thumb {
     width        : 20px;
     height       : 20px;
     background   : #ff0000;
@@ -52,7 +52,7 @@ input[type=range]#Slider::-moz-range-thumb {
     cursor       : pointer;
 }
 
-input[type=range]#Slider::-ms-track {
+input[type=range]::-ms-track {
     background  : transparent;
     border-color: transparent;
     border-width: 6.8px 0;
@@ -62,17 +62,17 @@ input[type=range]#Slider::-ms-track {
     cursor      : pointer;
 }
 
-input[type=range]#Slider::-ms-fill-lower {
+input[type=range]::-ms-fill-lower {
     background: #151515;
     border    : 0;
 }
 
-input[type=range]#Slider::-ms-fill-upper {
+input[type=range]::-ms-fill-upper {
     background: #646464;
     border    : 0;
 }
 
-input[type=range]#Slider::-ms-thumb {
+input[type=range]::-ms-thumb {
     width        : 20px;
     height       : 20px;
     background   : #ff0000;
@@ -84,11 +84,11 @@ input[type=range]#Slider::-ms-thumb {
     /*Needed to keep the Edge thumb centred*/
 }
 
-input[type=range]#Slider:focus::-ms-fill-lower {
+input[type=range]:focus::-ms-fill-lower {
     background: #646464;
 }
 
-input[type=range]#Slider:focus::-ms-fill-upper {
+input[type=range]:focus::-ms-fill-upper {
     background: #b3b3b3;
 }
 
@@ -97,7 +97,7 @@ input[type=range]#Slider:focus::-ms-fill-upper {
 @supports (-ms-ime-align:auto) {
 
     /* Pre-Chromium Edge only styles, selector taken from hhttps://stackoverflow.com/a/32202953/7077589 */
-    input[type=range]#Slider {
+    input[type=range] {
         margin: 0;
         /*Edge starts the margin from the thumb, not the track as other browsers do*/
     }

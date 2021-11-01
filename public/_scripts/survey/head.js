@@ -23,9 +23,8 @@ function handle_StartButton() {
     StartButton.disabled = true;
 
     if ( hasSlider ) {
-        Slider.disabled = false;
-        Slider.style.opacity = 1;
-        handle_Slider();
+        enable_Sliders();
+        handle_BreadthSlider();
     }
 
     if ( hasStopButton )
@@ -44,8 +43,7 @@ async function stop_execution() {
     cancelAnimationFrame(animationFrameRequest);
 
     if ( hasSlider ) {
-        Slider.disabled = true;
-        Slider.style.opacity = 0.5;
+        disable_Sliders();
     }
 
     if ( hasStopButton )
