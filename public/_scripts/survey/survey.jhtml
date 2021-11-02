@@ -3,7 +3,7 @@ document.getElementsByTagName("BODY")[0].innerHTML =
 '\
 <h1 class="centered"><span id="Round-Label"></span></h1>\
 <div class="centered" style="display: none">The process stops when your observed value exceeds <span id="IndependentSliderStopCondition"></span>.</div>\
-<div class="centered flex">\
+<div id="OutputDiv" class="centered flex">\
     <div class="stats">\
         <div id="CurrentValues" style="display: none">\
             Current<br>Value:<br><span id="Current__Value"></span>\
@@ -25,10 +25,15 @@ document.getElementsByTagName("BODY")[0].innerHTML =
 <div id="ControlsDiv">\
 \
     <div id="SliderDiv" style="display: none">\
-        Breadth of search: <span id="SliderBreadth"></span> <br>\
-        <input type="range" id="BreadthSlider" oninput="handle_BreadthSlider()" onchange="handle_BreadthSlider()" disabled> <br>\
-        Cost per <span id="SliderTimeUnit"></span>: <span id="SliderCost"></span> <br>\
-        <input type="range" id="CostSlider" oninput="handle_CostSlider()" onchange="handle_CostSlider()" disabled></span>\
+        Breadth of search: <span id="SliderBreadthSpan"></span> <br>\
+        <div> \
+            <span id="BreadthSliderMinSpan"></span> <input type="range" id="BreadthSlider" oninput="handle_BreadthSlider()" onchange="handle_BreadthSlider()" disabled> <span id="BreadthSliderMaxSpan"></span> </br>\
+        </div>\
+        <br>\
+        Cost per <span id="SliderTimeUnitSpan"></span>: <span id="SliderCostSpan"></span> <br>\
+        <div>\
+            <span id="CostSliderMinSpan"></span> <input type="range" id="CostSlider" oninput="handle_CostSlider()" onchange="handle_CostSlider()" disabled> <span id="CostSliderMaxSpan"></span>\
+        </div>\
     </div>\
 \
     <div>\

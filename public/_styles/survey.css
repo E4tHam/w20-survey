@@ -63,14 +63,24 @@ button:disabled {
 #ControlsDiv > * {
     margin: 1em;
 }
+#OutputDiv {
+    flex-wrap: wrap-reverse;
+}
+
 
 .stats {
     width: 100px;
 }
-#Slider {
-    width: auto !important;
-}
+
 #SliderDiv {
     color: #5c7e17;
     text-align: left;
+    min-width: 30%;
+}
+#SliderDiv div {
+    display: flex;
+    align-items: center;
+}
+#SliderDiv div > * {
+    margin: 0 .1em;
 }

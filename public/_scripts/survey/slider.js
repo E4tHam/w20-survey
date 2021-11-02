@@ -16,13 +16,16 @@ const SliderStep            = 0.001;
 const SliderDiv             = document.getElementById("SliderDiv");
 const BreadthSlider         = document.getElementById("BreadthSlider");
 const CostSlider            = document.getElementById("CostSlider");
-const SliderCost            = document.getElementById("SliderCost");
-const SliderBreadth         = document.getElementById("SliderBreadth");
-const SliderTimeUnit        = document.getElementById("SliderTimeUnit");
-
+const SliderCostSpan        = document.getElementById("SliderCostSpan");
+const SliderBreadthSpan     = document.getElementById("SliderBreadthSpan");
+const SliderTimeUnitSpan    = document.getElementById("SliderTimeUnitSpan");
+const BreadthSliderMinSpan  = document.getElementById("BreadthSliderMinSpan");
+const BreadthSliderMaxSpan  = document.getElementById("BreadthSliderMaxSpan");
+const CostSliderMinSpan     = document.getElementById("CostSliderMinSpan");
+const CostSliderMaxSpan     = document.getElementById("CostSliderMaxSpan");
 
 SliderDiv.setAttribute("style","");
-SliderTimeUnit.innerHTML
+SliderTimeUnitSpan.innerHTML
     = (DATA_SET=="independent") ? "draw"
     : (DATA_SET=="correlated")  ? "second"
     : "";
@@ -37,17 +40,21 @@ CostSlider.max              = costOf(BreadthSliderMax);
 CostSlider.value            = clamp(costOf(BreadthSliderMin), costOf(BreadthSliderStart), costOf(BreadthSliderMax));
 CostSlider.step             = SliderStep;
 
+BreadthSliderMinSpan.innerHTML = parseFloat(BreadthSlider.min).toFixed(2);
+BreadthSliderMaxSpan.innerHTML = parseFloat(BreadthSlider.max).toFixed(2);
+CostSliderMinSpan.innerHTML = parseFloat(CostSlider.min).toFixed(2);
+CostSliderMaxSpan.innerHTML = parseFloat(CostSlider.max).toFixed(2);
+
 var BreadthSlider_current = parseFloat( BreadthSlider.value );
 var CostSlider_current = parseFloat( CostSlider.value );
 
-SliderBreadth.innerHTML     = BreadthSliderStart.toFixed(2);
-SliderCost.innerHTML        = costOf(BreadthSliderStart).toFixed(2);
+SliderBreadthSpan.innerHTML     = BreadthSliderStart.toFixed(2);
+SliderCostSpan.innerHTML        = costOf(BreadthSliderStart).toFixed(2);
 
 
 Actions[ "BreadthSliderRecord" ]    = new Object();
 Actions[ "CostSliderRecord" ]       = new Object();
 
-let SLIDER_recent           = NaN;
 
 function enable_Sliders() {
     BreadthSlider.disabled = false;
@@ -80,6 +87,7 @@ function handle_CostSlider() {
     handle_Sliders();
 }
 
+
 let BreadthSlider_recent = NaN;
 
 function handle_Sliders() {
@@ -87,13 +95,12 @@ function handle_Sliders() {
     if ( BreadthSlider_current == BreadthSlider_recent || isNaN(frame) )
         return;
 
-    SliderBreadth.innerHTML = BreadthSlider_current.toFixed(2);
-    SliderCost.innerHTML = CostSlider_current.toFixed(2);
-
+    SliderBreadthSpan.innerHTML = BreadthSlider_current.toFixed(2);
+    SliderCostSpan.innerHTML = CostSlider_current.toFixed(2);
 
     BreadthSlider_recent = BreadthSlider_current;
 
-    console.log(`frame: ${frame}, BreadthSlider_current: ${BreadthSlider_current}, CostSlider_current: ${CostSlider_current}`);
+    // console.log(`frame: ${frame}, BreadthSlider_current: ${BreadthSlider_current}, CostSlider_current: ${CostSlider_current}`);
     Actions[ "BreadthSliderRecord" ][ frame ] = BreadthSlider_current;
     Actions[ "CostSliderRecord" ][ frame ] = CostSlider_current;
 
