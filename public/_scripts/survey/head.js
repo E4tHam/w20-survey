@@ -10,6 +10,10 @@ var animationFrameRequest   = NaN;
 
 //
 
+if ( hasSlider ) {
+    enable_Sliders();
+    handle_BreadthSlider();
+}
 
 function handle_StartButton() {
     frame = 0;
@@ -17,15 +21,14 @@ function handle_StartButton() {
     data_time_prev = 0;
     paused = false;
 
+    if ( hasSlider ) {
+        handle_Sliders();
+    }
+
     // reset client data
     CLIENT_DATA = [];
 
     StartButton.disabled = true;
-
-    if ( hasSlider ) {
-        enable_Sliders();
-        handle_BreadthSlider();
-    }
 
     if ( hasStopButton )
         StopButton.disabled = false;

@@ -92,11 +92,11 @@ let BreadthSlider_recent = NaN;
 
 function handle_Sliders() {
 
-    if ( BreadthSlider_current == BreadthSlider_recent || isNaN(frame) )
-        return;
-
     SliderBreadthSpan.innerHTML = BreadthSlider_current.toFixed(2);
     SliderCostSpan.innerHTML = CostSlider_current.toFixed(2);
+
+    if ( BreadthSlider_current == BreadthSlider_recent || isNaN(frame) )
+        return;
 
     BreadthSlider_recent = BreadthSlider_current;
 
