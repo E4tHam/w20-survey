@@ -25,8 +25,6 @@ function updateClientData() {
         );
     }
 
-    updateCost();
-
 }
 
 function handleOutOfPoints() {
@@ -42,8 +40,10 @@ function breadthOf(cost_value) {
     return Math.log(cost_value / 0.02) / 0.5;
 }
 function updateCost() {
-    let set_scalar = CLIENT_DATA[ CLIENT_DATA.length - 1 ] / SERVER_DATA[ point() ];
-    cost += costOf(set_scalar) / FPS;
+    if (frame % frames_per_point === 0) {
+        let set_scalar = CLIENT_DATA[ CLIENT_DATA.length - 1 ] / SERVER_DATA[ point() ];
+        cost += costOf(set_scalar);
+    }
 }
 
 function updateChart() {

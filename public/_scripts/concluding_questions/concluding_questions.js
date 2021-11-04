@@ -29,6 +29,7 @@ function handle_Q1_input() {
 function handle_SubmitButton1() {
     Q1_input.disabled = true;
     SubmitButton1.disabled = true;
+    Q1.style = "display:none";
     Q2.style = "";
 }
 

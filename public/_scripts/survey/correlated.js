@@ -18,8 +18,6 @@ function updateClientData() {
     // push
     CLIENT_DATA.push( SERVER_DATA[ data_i ] );
 
-    updateCost();
-
 }
 
 function handleLowEarnings() {
