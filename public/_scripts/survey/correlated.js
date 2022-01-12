@@ -5,6 +5,7 @@ var slider_speed        = 4;
 
 function updateClientData() {
 
+    let data_i_prev = Math.round( data_time_prev );
     let data_i = Math.round( data_time );
 
     // if time is up
@@ -16,8 +17,10 @@ function updateClientData() {
     }
 
     // push
-    CLIENT_DATA.push( SERVER_DATA[ data_i ] );
-
+    let new_server_data = Number.NEGATIVE_INFINITY;
+    for ( let i = data_i_prev; i <= data_i; i++ )
+        new_server_data = Math.max( new_server_data, SERVER_DATA[i] );
+    CLIENT_DATA.push( new_server_data );
 }
 
 function handleLowEarnings() {
@@ -42,7 +45,7 @@ function updateChart() {
 
     let next = {
         x: time(),
-        y: ( max_is_new ? max : CLIENT_DATA[CLIENT_DATA.length-1] )
+        y: CLIENT_DATA[CLIENT_DATA.length-1]
     }
 
     chart.data.datasets[0].data.push( next );

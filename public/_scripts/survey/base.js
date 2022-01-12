@@ -383,17 +383,9 @@ function oneDecimalCallback( label ) {
     return Number.isInteger( label ) ? ( label + ".0" ) : ( label + "" );
 }
 
-var max_is_new;
 function updateMax() {
-    let prev_max = max;
-    if (DATA_SET=="correlated") {
-        for ( let i = Math.round(data_time_prev); i <= Math.round(data_time); i++ )
-            max = Math.max( max, SERVER_DATA[i] );
-    } else if (DATA_SET=="independent") {
-        if ( CLIENT_DATA.length != 0 )
-            max = Math.max( max, CLIENT_DATA[ CLIENT_DATA.length - 1 ] );
-    }
-    max_is_new = (prev_max != max);
+    if ( CLIENT_DATA.length != 0 )
+        max = Math.max( max, CLIENT_DATA[ CLIENT_DATA.length - 1 ] );
 }
 
 
