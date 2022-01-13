@@ -42,7 +42,7 @@ function updateChart() {
 
     let next = {
         x: time(),
-        y: CLIENT_DATA[ CLIENT_DATA.length - 1 ]
+        y: ( max_is_new ? max : CLIENT_DATA[CLIENT_DATA.length-1] )
     }
 
     chart.data.datasets[0].data.push( next );
