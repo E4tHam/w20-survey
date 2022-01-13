@@ -7,8 +7,8 @@ const db                    = firebase.firestore();
 
 const SubmitButton          = document.getElementById( "SubmitButton" );
 const NameInput             = document.getElementById( "NameInput" );
-const SessionIdInput    = document.getElementById( "SessionIdInput" );
-const ComputerNumberInput    = document.getElementById( "ComputerNumberInput" );
+const SessionIdInput        = document.getElementById( "SessionIdInput" );
+const ComputerNumberInput   = document.getElementById( "ComputerNumberInput" );
 
 const CASE                  = document.currentScript.getAttribute("case");
 var NAME                    = "";
@@ -106,8 +106,9 @@ async function handle_SubmitButton() {
     // store all information
     await store_information();
 
+    // set processes
+    assign_process_order();
     // set process to 0
-    // assign_process_order();
     await store_process();
 
     // redirect
@@ -123,13 +124,14 @@ async function handle_SubmitButton() {
 
 
 function assign_process_order() {
-    // placeholder code
+    const CD_ORDER = [02, 16, 22, 25, 14, 23, 30, 26, 28, 20, 12, 13, 09, 18, 07, 08, 05, 06, 10, 03, 27, 29, 01, 24, 17, 11, 19, 21, 15, 04];
+    const ID_ORDER = [07, 16, 15, 02, 25, 14, 30, 26, 28, 23, 09, 20, 10, 18, 06, 08, 05, 12, 17, 03, 27, 29, 22, 21, 24, 01, 13, 11, 19, 04];
+    let PROCESS_ORDER = (DATA_SET=="correlated")?CD_ORDER : (DATA_SET=="independent")?ID_ORDER : null;
+    if (Math.random() > .5) PROCESS_ORDER.reverse();
     let temp = processes;
     processes = [];
-    while ( temp.length != 0 ) {
-        let rand = Math.floor( Math.random() * temp.length );
-        processes.push( temp[rand] );
-        temp.splice( rand, 1 );
+    for (let i = 0; i < PROCESS_ORDER.length; i++) {
+        processes.push( temp[PROCESS_ORDER[i]-1] );
     }
 }
 
