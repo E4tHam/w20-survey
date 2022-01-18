@@ -340,7 +340,7 @@ function initializeChartBase() {
             aspectRatio : ( 1 + goldenratio )       ,
             legend      : { display:  false }       ,
             animation   : { duration: 0 }           ,
-            elements    : { line: { tension: 0 } }  ,
+            // elements    : { line: { tension: 0 } }  ,
 
             scales: {
                 yAxes: [{
