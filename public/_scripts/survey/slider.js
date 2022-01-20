@@ -92,22 +92,19 @@ let BreadthSlider_recent = NaN;
 
 function handle_Sliders() {
 
+    if ( BreadthSlider_current == BreadthSlider_recent ) return;
+    BreadthSlider_recent = BreadthSlider_current;
+
     SliderBreadthSpan.innerHTML = BreadthSlider_current.toFixed(2);
     SliderCostSpan.innerHTML = CostSlider_current.toFixed(2);
 
-    if ( BreadthSlider_current == BreadthSlider_recent || isNaN(frame) )
-        return;
+    if ( DATA_SET == "independent" )
+        slider_scalar = BreadthSlider_current;
+    else if ( DATA_SET == "correlated" )
+        slider_speed = Math.max(1, BreadthSlider_current);
 
-    BreadthSlider_recent = BreadthSlider_current;
-
-    // console.log(`frame: ${frame}, BreadthSlider_current: ${BreadthSlider_current}, CostSlider_current: ${CostSlider_current}`);
+    if ( isNaN(frame) ) return;
     Actions[ "BreadthSliderRecord" ][ frame ] = BreadthSlider_current;
     Actions[ "CostSliderRecord" ][ frame ] = CostSlider_current;
 
-    if ( DATA_SET == "independent" ) {
-        slider_scalar = BreadthSlider_current;
-    }
-    else if ( DATA_SET == "correlated" ) {
-        slider_speed = Math.max(1, BreadthSlider_current);
-    }
 }
