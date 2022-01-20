@@ -5,11 +5,11 @@ var slider_speed        = 4;
 
 function updateClientData() {
 
-    let data_i_prev = Math.round( data_time_prev );
     let data_i = Math.round( data_time );
+    let data_i_next = Math.round( data_time_next );
 
     // if time is up
-    if ( time() >= timeLimit || data_i >= SERVER_DATA.length ) {
+    if ( time() >= timeLimit || data_i_next >= SERVER_DATA.length ) {
         handleOutOfTime();
     }
     if ((time()>3)&&( current_earnings() < earnings_floor )) {
@@ -18,7 +18,7 @@ function updateClientData() {
 
     // push
     let new_server_data = Number.NEGATIVE_INFINITY;
-    for ( let i = data_i_prev; i < data_i; i++ )
+    for ( let i = data_i; i < data_i_next; i++ )
         new_server_data = Math.max( new_server_data, SERVER_DATA[i] );
     CLIENT_DATA.push( new_server_data );
 }

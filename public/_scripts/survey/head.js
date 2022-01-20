@@ -15,15 +15,16 @@ if ( hasSlider ) {
     handle_BreadthSlider();
 }
 
+const data_time_delta = () => (DATA_SET=="correlated") ? Math.pow(slider_speed,2.0) : 1;
+
 function handle_StartButton() {
     frame = 0;
-    data_time = 0;
-    data_time_prev = 0;
-    paused = false;
 
-    if ( hasSlider ) {
-        handle_Sliders();
-    }
+    if ( hasSlider ) handle_Sliders();
+
+    data_time = 0;
+    data_time_next = data_time_delta();
+    paused = false;
 
     // reset client data
     CLIENT_DATA = [];
@@ -40,7 +41,7 @@ function handle_StartButton() {
 async function stop_execution() {
     Actions[ "StopTime" ] = time();
     frame = NaN;
-    data_time = NaN;
+    data_time_next = NaN;
     paused = true;
 
     cancelAnimationFrame(animationFrameRequest);
@@ -119,8 +120,8 @@ function draw() {
         return;
     }
 
-    data_time_prev = data_time;
-    data_time += (DATA_SET=="correlated") ? Math.pow(slider_speed,2.0) : 1;
+    data_time = data_time_next;
+    data_time_next += data_time_delta();
 
     frame++;
 }

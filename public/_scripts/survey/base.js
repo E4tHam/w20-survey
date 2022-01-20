@@ -74,8 +74,8 @@ var chart;
 
 const FPS               = 15;
 var frame               = NaN;
+var data_time_next      = NaN;
 var data_time           = NaN;
-var data_time_prev      = NaN;
 const time              = () => frame/FPS;
 var paused              = true;
 const timeLimit         = 100;
