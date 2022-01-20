@@ -120,9 +120,7 @@ function draw() {
     }
 
     data_time_prev = data_time;
-    data_time += ( hasSlider && DATA_SET == "correlated" ) ? (
-        slider_speed * slider_speed * 15 / FPS
-    )       : 15 / FPS;
+    data_time += (DATA_SET=="correlated") ? Math.pow(slider_speed,2.0) : 1;
 
     frame++;
 }

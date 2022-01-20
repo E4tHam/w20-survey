@@ -92,7 +92,7 @@ var cost                = 0;
 var earnings_floor      = -7.5;
 const current_earnings  = () => max - cost;
 const total_earnings    = () => current_earnings() + past_earnings;
-const average_earnings    = () => total_earnings() / (PROCESS+1);
+const average_earnings  = () => total_earnings() / (PROCESS+1);
 class Stop { };
 
 

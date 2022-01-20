@@ -108,6 +108,6 @@ function handle_Sliders() {
         slider_scalar = BreadthSlider_current;
     }
     else if ( DATA_SET == "correlated" ) {
-        slider_speed = BreadthSlider_current;
+        slider_speed = Math.max(1, BreadthSlider_current);
     }
 }

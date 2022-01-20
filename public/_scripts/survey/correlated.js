@@ -18,7 +18,7 @@ function updateClientData() {
 
     // push
     let new_server_data = Number.NEGATIVE_INFINITY;
-    for ( let i = data_i_prev; i <= data_i; i++ )
+    for ( let i = data_i_prev; i < data_i; i++ )
         new_server_data = Math.max( new_server_data, SERVER_DATA[i] );
     CLIENT_DATA.push( new_server_data );
 }
