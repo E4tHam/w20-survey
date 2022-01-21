@@ -103,8 +103,7 @@ function handle_Sliders() {
     else if ( DATA_SET == "correlated" )
         slider_speed = Math.max(1, BreadthSlider_current);
 
-    if ( isNaN(frame) ) return;
-    Actions[ "BreadthSliderRecord" ][ frame ] = BreadthSlider_current;
-    Actions[ "CostSliderRecord" ][ frame ] = CostSlider_current;
+    Actions[ "BreadthSliderRecord" ][ isNaN(frame)?0:frame ] = BreadthSlider_current;
+    Actions[ "CostSliderRecord" ][ isNaN(frame)?0:frame ] = CostSlider_current;
 
 }
