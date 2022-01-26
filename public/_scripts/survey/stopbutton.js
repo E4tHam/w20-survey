@@ -11,6 +11,6 @@ Actions[ "StopButtonTime" ] = NaN;
 
 
 function handle_StopButton() {
-    paused = true;
+    stopped = true;
     Actions[ "StopButtonTime" ] = time();
 }

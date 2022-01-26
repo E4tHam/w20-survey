@@ -20,11 +20,9 @@ const data_time_delta = () => (DATA_SET=="correlated") ? Math.pow(slider_speed,2
 function handle_StartButton() {
     frame = 0;
 
-    if ( hasSlider ) handle_Sliders();
+    if ( hasSlider ) updateValuesFrom_Sliders();
 
-    data_time = 0;
-    data_time_next = data_time_delta();
-    paused = false;
+    data_time_next = 0;
 
     // reset client data
     CLIENT_DATA = [];
@@ -42,7 +40,7 @@ async function stop_execution() {
     Actions[ "StopTime" ] = time();
     frame = NaN;
     data_time_next = NaN;
-    paused = true;
+    stopped = true;
 
     cancelAnimationFrame(animationFrameRequest);
 
@@ -88,11 +86,19 @@ function draw() {
 
     timer_then = timer_now - ( timer_delta % timer_interval );
 
+    /* Increment time */
+    data_time = data_time_next;
+
+    /* Update Breadth */
+    if ( hasSlider )
+        updateValuesFrom_Sliders();
+
+    /* Choose number of server data points to check */
+    data_time_next += data_time_delta();
 
     /* Update Client Data or Stop */
     try {
-        if ( paused )
-            throw new Stop();
+        if (stopped) throw new Stop();
         updateClientData();
     } catch ( error ) {
         if ( !(error instanceof Stop) )
@@ -119,9 +125,6 @@ function draw() {
         stop_execution();
         return;
     }
-
-    data_time = data_time_next;
-    data_time_next += data_time_delta();
 
     frame++;
 }

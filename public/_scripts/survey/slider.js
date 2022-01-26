@@ -87,23 +87,23 @@ function handle_CostSlider() {
     handle_Sliders();
 }
 
-
-let BreadthSlider_recent = NaN;
-
 function handle_Sliders() {
-
-    if ( BreadthSlider_current == BreadthSlider_recent ) return;
-    BreadthSlider_recent = BreadthSlider_current;
-
     SliderBreadthSpan.innerHTML = BreadthSlider_current.toFixed(2);
     SliderCostSpan.innerHTML = CostSlider_current.toFixed(2);
+}
+
+let BreadthSlider_previous = NaN;
+let CostSlider_previous = NaN;
+function updateValuesFrom_Sliders() {
+    if ( BreadthSlider_current == BreadthSlider_previous ) return;
+    BreadthSlider_previous = BreadthSlider_current;
+    CostSlider_previous = CostSlider_current;
 
     if ( DATA_SET == "independent" )
-        slider_scalar = BreadthSlider_current;
+        slider_scalar = BreadthSlider_previous;
     else if ( DATA_SET == "correlated" )
-        slider_speed = Math.max(1, BreadthSlider_current);
+        slider_speed = BreadthSlider_previous;
 
-    Actions[ "BreadthSliderRecord" ][ isNaN(frame)?0:frame ] = BreadthSlider_current;
-    Actions[ "CostSliderRecord" ][ isNaN(frame)?0:frame ] = CostSlider_current;
-
+    Actions[ "BreadthSliderRecord" ][ frame ] = BreadthSlider_previous;
+    Actions[ "CostSliderRecord" ][ frame ] = CostSlider_previous;
 }

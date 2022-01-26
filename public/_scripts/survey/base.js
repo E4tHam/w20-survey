@@ -77,7 +77,7 @@ var frame               = NaN;
 var data_time_next      = NaN;
 var data_time           = NaN;
 const time              = () => frame/FPS;
-var paused              = true;
+var stopped             = false;
 const timeLimit         = 100;
 
 
