@@ -13,4 +13,7 @@ Actions[ "StopButtonTime" ] = NaN;
 function handle_StopButton() {
     stopped = true;
     Actions[ "StopButtonTime" ] = time();
+
+    StopButton.disabled = true;
+    if (hasSlider == true) disable_Sliders();
 }

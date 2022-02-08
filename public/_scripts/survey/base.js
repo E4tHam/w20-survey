@@ -308,7 +308,13 @@ function incrementProccess() {
 
 function handleOutOfTime() {
     console.log("[WARNING]: Time is up!");
-    alert(`You have exceeded ${timeLimit.toFixed(0)} seconds, so the program will move to the next round.`);
+    alert(`You have exceeded ${time().toFixed(0)} seconds, so the program will move to the next round.`);
+    throw new Stop();
+}
+
+function handleOutOfData() {
+    console.log("[WARNING]: Time is up!");
+    alert(`You have exceeded the length of the data, so the program will move to the next round.`);
     throw new Stop();
 }
 

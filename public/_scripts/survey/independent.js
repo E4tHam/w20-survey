@@ -4,6 +4,7 @@
 
 const seconds_per_point = 3;
 const frames_per_point  = FPS*seconds_per_point;
+const stop_line_length  = FPS;
 const point = () => Math.floor( frame / frames_per_point );
 
 var slider_scalar       = 6.17;

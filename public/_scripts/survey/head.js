@@ -103,8 +103,10 @@ function draw() {
     } catch ( error ) {
         if ( !(error instanceof Stop) )
             throw error;
-        stop_execution();
-        return;
+        if ( !((DATA_SET=="independent") && ((frame%frames_per_point) < stop_line_length)) ) {
+            stop_execution();
+            return;
+        }
     }
 
     /* Update Values */

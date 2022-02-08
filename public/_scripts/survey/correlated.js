@@ -8,13 +8,12 @@ function updateClientData() {
     let data_i = Math.round( data_time );
     let data_i_next = Math.round( data_time_next );
 
-    // if time is up
-    if ( time() >= timeLimit || data_i_next >= SERVER_DATA.length ) {
+    if ( time() >= timeLimit )
         handleOutOfTime();
-    }
-    if ((time()>3)&&( current_earnings() < earnings_floor )) {
+    else if ( data_i_next >= SERVER_DATA.length )
+        handleOutOfData();
+    else if ( (time() > 0) && (current_earnings() < earnings_floor) )
         handleLowEarnings();
-    }
 
     // push
     let new_server_data = Number.NEGATIVE_INFINITY;
