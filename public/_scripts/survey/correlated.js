@@ -22,9 +22,21 @@ function updateClientData() {
     CLIENT_DATA.push( new_server_data );
 }
 
+function handleOutOfTime() {
+    console.log("[WARNING]: Time is up!");
+    error_message = `You have exceeded ${time().toFixed(0)} seconds, so the program will move to the next round.`;
+    throw new Stop();
+}
+
+function handleOutOfData() {
+    console.log("[WARNING]: Time is up!");
+    error_message = `You have exceeded the length of the data, so the program will move to the next round.`;
+    throw new Stop();
+}
+
 function handleLowEarnings() {
     console.log("[WARNING]: Earnings are too low!");
-    alert(`You have reached a negative profit of $${Math.abs(earnings_floor).toFixed(2)}, so the program will move to the next round.`);
+    error_message = `You have reached a negative profit of $${Math.abs(earnings_floor).toFixed(2)}, so the program will move to the next round.`;
     throw new Stop();
 }
 

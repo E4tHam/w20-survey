@@ -33,6 +33,7 @@ function checkStopCondition() {
     ) {
         console.log("Stopping condition met.");
         Actions[ "StopConditionTime" ] = time();
+        if (DATA_SET === "correlated") updateChart();
         throw new Stop();
     }
 

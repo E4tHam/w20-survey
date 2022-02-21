@@ -14,7 +14,7 @@ var max_point = 30;
 function updateClientData() {
 
     // if time is up
-    if ( point() >= max_point || SERVER_DATA.length <= point() ) {
+    if ( point() >= (max_point-1) || point() >= (SERVER_DATA.length-1) ) {
         handleOutOfPoints();
     }
 
@@ -30,7 +30,7 @@ function updateClientData() {
 
 function handleOutOfPoints() {
     console.log("[WARNING]: Out of Points!");
-    alert(`You have drawn the maximum of ${(point())} points, so the program will move to the next round.`);
+    error_message = `You have drawn the maximum of ${(point()+1)} points, so the program will move to the next round.`;
     throw new Stop();
 }
 
