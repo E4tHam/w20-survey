@@ -15,6 +15,7 @@ const app               = firebase.app();
 const db                = firebase.firestore();
 var processes           = [ "" ];
 var total_earnings      = NaN;
+var average_earnings    = NaN;
 
 handle_Q1_input();
 function handle_Q1_input() {
@@ -59,7 +60,8 @@ async function handle_SubmitButton2() {
             finished_processes: true,
             finished: true,
             order: processes,
-            total_earnings: total_earnings
+            total_earnings: total_earnings,
+            average_earnings: average_earnings
         });
     window.location.replace(
         "../../done/"
@@ -82,6 +84,7 @@ async function loadData() {
 
                 processes = doc.data().order;
                 total_earnings = doc.data().total_earnings;
+                average_earnings = doc.data().average_earnings;
             });
 }
 

@@ -162,7 +162,8 @@ function store_process() {
             finished: false,
             current: 0,
             order: processes,
-            total_earnings: 0
+            total_earnings: NaN,
+            average_earnings: NaN
         })
     .then(function() {
         console.log("Process number successfully written!");

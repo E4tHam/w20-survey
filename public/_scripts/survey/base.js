@@ -241,6 +241,8 @@ function incrementProccess() {
                     finished: false,
                     current: 0,
                     order: processes,
+                    total_earnings: 0,
+                    average_earnings: 0
                 })
             .then(function() {
                 console.log("Process data updated.");
@@ -258,6 +260,8 @@ function incrementProccess() {
                     finished: false,
                     current: ( PROCESS + 1 ),
                     order: processes,
+                    total_earnings: NaN,
+                    average_earnings: NaN
                 })
             .then(function() {
                 console.log("Current proccess metadata successfully incremented!");
