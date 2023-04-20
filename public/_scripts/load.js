@@ -51,14 +51,43 @@ async function upload_data(arrays,case_name,data_name,prefix,num_arrays) {
 
         document_ids.push( name );
         console.log(`uploading ${name}`);
-        console.log(arrays[i].slice( 0, 21250 ));
 
-        await db.collection( "onload_data" ).doc( case_name )
+        if (case_name=="correlated") {
+            console.log(arrays[i].slice( 0, 30000 ));
+            await db.collection( "onload_data" ).doc( case_name )
+                .collection( data_name ).doc( name+".0" )
+                .set({
+                    data: arrays[i].slice( 0, 15000 )
+                })
+                .then(function() {
+                    console.log(`${name}.0 successfully added!`);
+                }).catch(function(error) {
+                    console.error(`Error adding ${name}: `, error);
+                });
+            ;
+            await db.collection( "onload_data" ).doc( case_name )
+                .collection( data_name ).doc( name+".1" )
+                .set({
+                    data: arrays[i].slice( 15000, 30000 )
+                })
+                .then(function() {
+                    console.log(`${name}.1 successfully added!`);
+                }).catch(function(error) {
+                    console.error(`Error adding ${name}: `, error);
+                });
+        } else if (case_name=="independent") {
+            console.log(arrays[i].slice( 0, 21250 ));
+            await db.collection( "onload_data" ).doc( case_name )
             .collection( data_name ).doc( name )
             .set({
                 data: arrays[i].slice( 0, 21250 )
             })
-        ;
+            .then(function() {
+                console.log(`${name} successfully added!`);
+            }).catch(function(error) {
+                console.error(`Error adding ${name}: `, error);
+            });
+        }
     }
 
     db.collection( "onload_data" ).doc( case_name )

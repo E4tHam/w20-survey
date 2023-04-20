@@ -146,15 +146,31 @@ async function loadData() {
         })
     ;
 
-    // console.log( `Retrieving process number ${PROCESS}: ${PROCESS_ID()}.` );
-    await db.collection( "onload_data" ).doc( DATA_SET )
-        .collection( PRACTICE?"practice":"processes" ).doc( PROCESS_ID() )
-        .get()
-        .then( doc => {
-            SERVER_DATA = doc.data().data;
-            StartButton.disabled = false;
-        })
-    ;
+    if (DATA_SET=="correlated") {
+        let SERVER_DATA_0 = [NaN];
+        await db.collection( "onload_data" ).doc( DATA_SET )
+            .collection( PRACTICE?"practice":"processes" ).doc( PROCESS_ID()+".0" )
+            .get()
+            .then( doc => {
+                SERVER_DATA_0 = doc.data().data;
+            });
+        let SERVER_DATA_1 = [NaN];
+        await db.collection( "onload_data" ).doc( DATA_SET )
+            .collection( PRACTICE?"practice":"processes" ).doc( PROCESS_ID()+".1" )
+            .get()
+            .then( doc => {
+                SERVER_DATA_1 = doc.data().data;
+            });
+        SERVER_DATA = SERVER_DATA_0.concat(SERVER_DATA_1);
+    } else if (DATA_SET=="independent") {
+        await db.collection( "onload_data" ).doc( DATA_SET )
+            .collection( PRACTICE?"practice":"processes" ).doc( PROCESS_ID() )
+            .get()
+            .then( doc => {
+                SERVER_DATA = doc.data().data;
+            });
+    }
+    StartButton.disabled = false;
 
     // enter password
     if (PRACTICE == true && PROCESS == 0)
