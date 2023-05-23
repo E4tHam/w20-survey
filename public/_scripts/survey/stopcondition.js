@@ -6,9 +6,8 @@
 
 // Correlated:
 // Let M be the max value achieved up to that point
-// Stop when X < M - d
-// d = sigma^2/(2*cost)
-const d = () => (BreadthSlider_current*BreadthSlider_current) / (2 * CostSlider_current);
+// Stop when X < M - d where d is a constant
+const d = 18.04;
 
 // Independent:
 // Let X be the value of process at that point
@@ -27,7 +26,7 @@ function checkStopCondition() {
 
     if (
            ( DATA_SET === "correlated"
-            && CLIENT_DATA[ CLIENT_DATA.length-1 ] < max - d()  )
+            && CLIENT_DATA[ CLIENT_DATA.length-1 ] < max - d    )
         ||
             ( DATA_SET === "independent"
             && CLIENT_DATA[ CLIENT_DATA.length-1 ] > t          )
