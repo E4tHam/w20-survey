@@ -25,7 +25,7 @@ document.getElementsByTagName("BODY")[0].innerHTML =
 <div id="ControlsDiv">\
 \
     <div id="SliderDiv" style="display: none">\
-        Breadth of search: <span id="SliderBreadthSpan"></span> <br>\
+        Scope of search: <span id="SliderBreadthSpan"></span> <br>\
         <div> \
             <span id="BreadthSliderMinSpan"></span> <input type="range" id="BreadthSlider" oninput="handle_BreadthSlider()" onchange="handle_BreadthSlider()" disabled> <span id="BreadthSliderMaxSpan"></span> </br>\
         </div>\
