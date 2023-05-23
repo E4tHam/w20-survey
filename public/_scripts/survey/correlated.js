@@ -16,10 +16,22 @@ function updateClientData() {
         handleLowEarnings();
 
     // push
-    let new_server_data = Number.NEGATIVE_INFINITY;
-    for ( let i = data_i; i < data_i_next; i++ )
-        new_server_data = Math.max( new_server_data, SERVER_DATA[i] );
-    CLIENT_DATA.push( new_server_data );
+    let max_server_data = Number.NEGATIVE_INFINITY;
+    CLIENT_DATA.push( max_server_data );
+    for ( let i = data_i; i < data_i_next; i++ ) {
+        max_server_data = Math.max( max_server_data, SERVER_DATA[i] );
+        CLIENT_DATA[ CLIENT_DATA.length-1 ] = SERVER_DATA[i];
+        if ( !hasStopButton ) {
+            try {
+                checkStopCondition();
+            }
+            catch (error) {
+                // check if current data causes stop condition
+                return;
+            }
+        }
+    }
+    CLIENT_DATA[ CLIENT_DATA.length-1 ] = max_server_data;
 }
 
 function handleOutOfTime() {

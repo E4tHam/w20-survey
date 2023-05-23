@@ -31,9 +31,8 @@ function checkStopCondition() {
             ( DATA_SET === "independent"
             && CLIENT_DATA[ CLIENT_DATA.length-1 ] > t          )
     ) {
-        console.log("Stopping condition met.");
+        console.log(`Stopping condition met: ${CLIENT_DATA[ CLIENT_DATA.length-1 ]} < ${max} - ${d}`);
         Actions[ "StopConditionTime" ] = time();
-        if (DATA_SET === "correlated") updateChart();
         throw new Stop();
     }
 

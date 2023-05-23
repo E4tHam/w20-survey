@@ -108,6 +108,7 @@ function draw() {
     } catch ( error ) {
         if ( !(error instanceof Stop) )
             throw error;
+        if (DATA_SET === "correlated" && !hasStopButton) updateChart();
         stopped = true;
         if ( hasSlider ) disable_Sliders();
         if ( hasStopButton ) StopButton.disabled = true;
