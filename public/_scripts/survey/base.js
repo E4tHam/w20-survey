@@ -15,6 +15,7 @@ const CASE              = document.currentScript.getAttribute("case");
 const TOKEN             = urlParams.get("token");
 const PROCESS           = parseInt( urlParams.get("process") );
 const PRACTICE          = ( urlParams.get("practice") != null );
+const BODY_FONT         = window.getComputedStyle(BODY).getPropertyValue('font-family');
 
 if ( TOKEN == null ) handle_noToken();
 document.getElementById( "Round-Label" ).innerHTML = (PRACTICE?"Practice ":"") + "Round " + ( PROCESS + 1 );
@@ -332,6 +333,8 @@ function incrementProccess() {
 /* Chart */
 
 function initializeChartBase() {
+
+    Chart.defaults.global.defaultFontFamily  = BODY_FONT
 
     chart = new Chart(ctx, {
         type: 'line',
