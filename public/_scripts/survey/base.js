@@ -107,7 +107,15 @@ function handle_noToken() {
 }
 
 function requestPassword(password_index) {
-    passwords = ["0","1","2","3","4","5","6","7","8","9","10"];
+    passwords = [
+        "red",
+        "dog",
+        "wind",
+        "square",
+        "spoon",
+        "cat",
+        "ocean"
+    ];
     let entered_passowrd = null;
     while (entered_passowrd != passwords[password_index]) {
         entered_passowrd = prompt("Please wait for the password to be given before continuing with the experiment.");
