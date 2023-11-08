@@ -13,6 +13,8 @@ Firebase Database: <https://console.firebase.google.com/project/w21-survey/>
 
 ```bash
 # install firebase
+sudo apt install npm
+nvm install node
 sudo npm install -g firebase-tools
 # login
 firebase login
@@ -20,6 +22,9 @@ firebase login
 firebase serve
 # publish
 firebase deploy
+
+# delete all submissions
+firebase firestore:delete -r submissions
 ```
 
 ## References

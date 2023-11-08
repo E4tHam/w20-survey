@@ -96,4 +96,5 @@ async function upload_data(arrays,case_name,data_name,prefix,num_arrays) {
             ids: document_ids
         })
     ;
+    console.log(`Done uploading ${data_name}.`);
 }
